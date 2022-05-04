@@ -1,0 +1,20 @@
+size
+opeartion result cells
+
+size:
+	size of the baord from 2 to 16
+
+opeartion:
+	+, a, add
+	-, s, sub, subtract
+	*, m, mul, multiply
+	/, d, div, divide
+	e, eq, equal
+	
+result:
+	postive int
+
+cells:
+	(x1,y1) (x2,y2) no spaces, from 0:size-1	
+	
+

@@ -21,6 +21,22 @@ public:
       return false;
     if (!follow_constraints())
       return false;
+    if(missed_cells())
+      return false;
+    return true;
+  }
+
+  bool vaild_board() {
+    try {
+      for (const Constraint &constraint : m_constraints)
+        if(!vaild_constraint(constraint))
+          return false;
+    } catch (const exception& ex) {
+      return false;
+    }
+
+    if(missed_cells())
+      return false;
     return true;
   }
 
@@ -80,14 +96,25 @@ private:
   }
 
   void check_constraint(const Constraint &constraint) {
-    if (!constraint.vaild())
+    if (!vaild_constraint(constraint))
       throw InvaildConstraintException();
 
     for (const Cell &cell : constraint.cells()) {
-      check_cell(cell);
       if (belongs_to_constraint(cell))
         throw InvaildConstraintException();
     }
+  }
+  bool vaild_constraint(const Constraint &constraint) {
+    if (!constraint.vaild())
+      return false;
+
+    try {
+      for (const Cell &cell : constraint.cells())
+        check_cell(cell);
+    } catch (const InvaildCellException& ex) {
+      return false;
+    }
+    return true;
   }
 
   bool follow_constraint(const Constraint &constraint) {

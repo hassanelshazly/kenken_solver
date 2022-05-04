@@ -18,10 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     lib/constraint.cpp \
     lib/kenkenboard.cpp \
+    lib/kenkenboardgenerator.cpp \
     main.cpp \
     ui/kenken.cpp
 
 HEADERS += \
+    lib/kenkenboardgenerator.h \
     ui/kenken.h \
     lib/constraint.h \
     lib/kenkenboard.h

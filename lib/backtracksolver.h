@@ -31,7 +31,8 @@ private:
       return false;
 
     if(!opt_cell.has_value())
-      return false; // No solution TODO: find a better way
+      // Something wrong, shouldn't get here
+      return false;
 
     Cell cell = opt_cell.value();
     for(int i = 1; i <= m_board.size(); i++) {

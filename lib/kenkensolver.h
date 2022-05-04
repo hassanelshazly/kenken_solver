@@ -14,7 +14,7 @@ public:
 
   virtual ~KenKenSolver(){}
 
-  virtual void solve() {}
+  virtual void solve() = 0;
 
   KenKenBoard board() const;
   void set_board(const KenKenBoard &board);

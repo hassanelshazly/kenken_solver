@@ -37,6 +37,10 @@ public:
     return round(msecs / 1000.0);
   }
 
+  KenKenSolver* operator ->() {
+    return m_solver.get();
+  }
+
 private:
   shared_ptr<KenKenSolver> m_solver;
   QElapsedTimer timer;

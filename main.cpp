@@ -53,13 +53,12 @@ int main(int argc, char *argv[]) {
 
   board = generateor.generate_from_file("../kenken_solver/examples/ex1.txt");
   shared_ptr<KenKenSolver> solver(new BacktrackSolver(board));
+  BenchmarkingSolver bm_solver{shared_ptr<KenKenSolver>(solver)};
 
   qDebug() << "\n\nBacktrackSolver\n";
-
-  BenchmarkingSolver bm_solver{shared_ptr<KenKenSolver>(solver)};
   bm_solver.solve();
   qDebug() << "3x3 Solved In:" << bm_solver.measured_msecs() << "milliseconds";
-  qDebug() << solver->board();
+  qDebug() << bm_solver->board();
 
   return a.exec();
 }

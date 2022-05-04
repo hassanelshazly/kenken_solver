@@ -1,10 +1,10 @@
 #include "lib/kenkenboard.h"
 #include "lib/boardgenerator.h"
 #include "lib/backtracksolver.h"
+#include "lib/benchmarkingsolver.h"
 #include "ui/kenken.h"
 
 #include <QApplication>
-#include <QElapsedTimer>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
@@ -52,15 +52,14 @@ int main(int argc, char *argv[]) {
 
 
   board = generateor.generate_from_file("../kenken_solver/examples/ex1.txt");
-  BacktrackSolver solver(board);
+  shared_ptr<KenKenSolver> solver(new BacktrackSolver(board));
 
   qDebug() << "\n\nBacktrackSolver\n";
 
-  QElapsedTimer timer;
-  timer.start();
-  solver.solve();
-  qDebug() << "3x3 Solved In:" << timer.elapsed() << "milliseconds";
-  qDebug() << solver.board();
+  BenchmarkingSolver bm_solver{shared_ptr<KenKenSolver>(solver)};
+  bm_solver.solve();
+  qDebug() << "3x3 Solved In:" << bm_solver.measured_msecs() << "milliseconds";
+  qDebug() << solver->board();
 
   return a.exec();
 }

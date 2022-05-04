@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     lib/backtracksolver.cpp \
+    lib/benchmarkingsolver.cpp \
     lib/boardgenerator.cpp \
     lib/constraint.cpp \
     lib/kenkenboard.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
     lib/backtracksolver.h \
+    lib/benchmarkingsolver.h \
     lib/boardgenerator.h \
     lib/kenkensolver.h \
     ui/kenken.h \

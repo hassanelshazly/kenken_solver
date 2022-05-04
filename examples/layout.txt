@@ -17,4 +17,7 @@ result:
 cells:
 	(x1,y1) (x2,y2) no spaces, from 0:size-1	
 	
+	
+3x3 Solved In: 32 milliseconds
+4x4 Solved In: 5437999 milliseconds // 1.5 h
 

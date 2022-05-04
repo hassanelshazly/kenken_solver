@@ -4,10 +4,10 @@
 #include "kenkenboard.h"
 #include <qfile.h>
 
-class KenKenBoardGenerator
+class BoardGenerator
 {
 public:
-  KenKenBoardGenerator();
+  BoardGenerator();
 
   KenKenBoard generate_random(uint8_t size) {
     KenKenBoard board(size);

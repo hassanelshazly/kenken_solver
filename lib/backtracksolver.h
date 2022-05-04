@@ -3,14 +3,14 @@
 
 #include "kenkensolver.h"
 
-class KenKenBacktrackSolver : public KenKenSolver
+class BacktrackSolver : public KenKenSolver
 {
 public:
-  KenKenBacktrackSolver();
+  BacktrackSolver();
 
-  KenKenBacktrackSolver(KenKenBoard board) : KenKenSolver(board) {}
+  BacktrackSolver(KenKenBoard board) : KenKenSolver(board) {}
 
-  ~KenKenBacktrackSolver() {}
+  ~BacktrackSolver() {}
 
   void solve() override {
     backtrack_solve(optional<Cell>({0, 0}));

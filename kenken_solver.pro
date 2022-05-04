@@ -16,17 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    lib/backtracksolver.cpp \
+    lib/boardgenerator.cpp \
     lib/constraint.cpp \
-    lib/kenkenbacktracksolver.cpp \
     lib/kenkenboard.cpp \
-    lib/kenkenboardgenerator.cpp \
     lib/kenkensolver.cpp \
     main.cpp \
     ui/kenken.cpp
 
 HEADERS += \
-    lib/kenkenbacktracksolver.h \
-    lib/kenkenboardgenerator.h \
+    lib/backtracksolver.h \
+    lib/boardgenerator.h \
     lib/kenkensolver.h \
     ui/kenken.h \
     lib/constraint.h \

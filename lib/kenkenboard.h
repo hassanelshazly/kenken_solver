@@ -16,7 +16,7 @@ public:
   KenKenBoard();
   KenKenBoard(uint8_t size);
 
-  bool vaild_solution() {
+  bool vaild_solution() const {
     if (!check_rows_and_cols())
       return false;
     if (!follow_constraints())
@@ -26,7 +26,15 @@ public:
     return true;
   }
 
-  bool vaild_board() {
+  bool complete_solution() const {
+    for (int i = 0; i < m_size; i++)
+      for (int j = 0; j < m_size; j++)
+        if(m_board[i][j] == 0)
+          return false;
+    return true;
+  }
+
+  bool vaild_board() const {
     try {
       for (const Constraint &constraint : m_constraints)
         if(!vaild_constraint(constraint))
@@ -40,16 +48,23 @@ public:
     return true;
   }
 
-  bool follow_constraints() {
+  bool follow_constraints() const {
     for (const Constraint &constraint : m_constraints)
       if (!follow_constraint(constraint))
         return false;
     return true;
   }
 
-  uint8_t get(const Cell &cell) { return m_board[cell.first][cell.second]; }
+  uint8_t get(const Cell &cell) const { return m_board[cell.first][cell.second]; }
+  void clear(const Cell &cell) { m_board[cell.first][cell.second] = 0; }
 
-  bool belongs_to_constraint(const Cell &cell) {
+  void clear() {
+    for (int i = 0; i < m_size; i++)
+      for (int j = 0; j < m_size; j++)
+        m_board[i][j] == 0;
+  }
+
+  bool belongs_to_constraint(const Cell &cell) const {
     for (const Constraint &constraint : m_constraints)
       if (constraint.includes(cell))
         return true;
@@ -84,18 +99,20 @@ public:
 
   friend QDebug operator<<(QDebug dbg, const KenKenBoard &board);
 
+  uint8_t size() const;
+
 private:
-  void check_cell(const Cell &cell) {
+  void check_cell(const Cell &cell) const {
     if (cell.first >= m_size || cell.second >= m_size)
       throw InvaildCellException();
   }
 
-  void check_value(uint8_t value) {
+  void check_value(uint8_t value) const {
     if (value == 0 || value > m_size)
       throw InvaildValueException();
   }
 
-  void check_constraint(const Constraint &constraint) {
+  void check_constraint(const Constraint &constraint) const {
     if (!vaild_constraint(constraint))
       throw InvaildConstraintException();
 
@@ -104,7 +121,8 @@ private:
         throw InvaildConstraintException();
     }
   }
-  bool vaild_constraint(const Constraint &constraint) {
+
+  bool vaild_constraint(const Constraint &constraint) const {
     if (!constraint.vaild())
       return false;
 
@@ -117,7 +135,7 @@ private:
     return true;
   }
 
-  bool follow_constraint(const Constraint &constraint) {
+  bool follow_constraint(const Constraint &constraint) const {
     vector<uint8_t> values;
     for (const Cell &cell : constraint.cells()) {
       values.push_back(get(cell));
@@ -125,7 +143,7 @@ private:
     return constraint.vaild_values(values);
   }
 
-  bool check_rows_and_cols() {
+  bool check_rows_and_cols() const {
     std::set<uint8_t> st;
     for (int type = 0; type < 2; type++) {
       for (int i = 0; i < m_size; i++) {
@@ -143,7 +161,7 @@ private:
     return true;
   }
 
-  bool missed_cells() {
+  bool missed_cells() const{
     map<Cell, int> cells_mp;
     for (const Constraint &constraint : m_constraints)
       for (const Cell &cell : constraint.cells())

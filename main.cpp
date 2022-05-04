@@ -1,9 +1,10 @@
 #include "lib/kenkenboard.h"
 #include "lib/kenkenboardgenerator.h"
+#include "lib/kenkenbacktracksolver.h"
 #include "ui/kenken.h"
 
 #include <QApplication>
-#include <QDir>
+#include <QElapsedTimer>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
@@ -30,6 +31,11 @@ int main(int argc, char *argv[]) {
   for (const auto &constraint : constraints)
     board.add_constraint(constraint);
   qDebug() << board << "\n";
+//  KenKenBacktrackSolver solver_a(board);
+//  QElapsedTimer timer;
+//  timer.start();
+//  solver_a.solve();
+//  qDebug() << "4x4 Solved In: " << timer.elapsed() << "milliseconds";
   assert(board.vaild_solution());
 
   assert(!Constraint('+', 5, {{1, 1}, {2, 2}, {3, 2}}).check_adjacency());
@@ -49,6 +55,13 @@ int main(int argc, char *argv[]) {
   qDebug() << board << "\n";
   assert(board.vaild_solution());
 
-  
+
+  board = generateor.generate_from_file("../kenken_solver/examples/ex1.txt");
+  KenKenBacktrackSolver solver(board);
+
+  qDebug() << "\n\nBacktrackSolver\n";
+  solver.solve();
+  qDebug() << solver.board();
+
   return a.exec();
 }

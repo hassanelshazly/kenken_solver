@@ -20,3 +20,8 @@ KenKenBoard::KenKenBoard(uint8_t size)
     throw InvaildSizeException();
   }
 }
+
+uint8_t KenKenBoard::size() const
+{
+  return m_size;
+}

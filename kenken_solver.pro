@@ -17,13 +17,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     lib/constraint.cpp \
+    lib/kenkenbacktracksolver.cpp \
     lib/kenkenboard.cpp \
     lib/kenkenboardgenerator.cpp \
+    lib/kenkensolver.cpp \
     main.cpp \
     ui/kenken.cpp
 
 HEADERS += \
+    lib/kenkenbacktracksolver.h \
     lib/kenkenboardgenerator.h \
+    lib/kenkensolver.h \
     ui/kenken.h \
     lib/constraint.h \
     lib/kenkenboard.h

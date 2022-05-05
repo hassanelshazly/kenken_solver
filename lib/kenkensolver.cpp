@@ -5,7 +5,7 @@ KenKenSolver::KenKenSolver()
 
 }
 
-KenKenBoard KenKenSolver::board() const
+KenKenBoard& KenKenSolver::board()
 {
   return m_board;
 }

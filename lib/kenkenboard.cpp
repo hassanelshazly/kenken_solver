@@ -19,11 +19,6 @@ vector<Constraint> KenKenBoard::constraints() const
   return m_constraints;
 }
 
-void KenKenBoard::set_constraints(const vector<Constraint> &constraints)
-{
-  m_constraints = constraints;
-}
-
 QDebug operator<<(QDebug dbg, const KenKenBoard &board) {
   for (int i = 0; i < board.m_size; i++) {
     for (int j = 0; j < board.m_size; j++)

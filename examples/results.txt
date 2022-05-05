@@ -1,11 +1,25 @@
+DebugMode:
 BacktrackSolver
-"board3x3.txt" solved in: 25 milliseconds
+"board3x3.txt" solved in: 21 milliseconds
 "board4x4.txt" solved in: 5437999 milliseconds // around 1.5h
 
 ForwardCheckingSolver
 "board3x3.txt" solved in: 0.1 milliseconds
-"board4x4.txt" solved in: 9 milliseconds
-"board5x5.txt" solved in: 19 milliseconds
-"board6x6.txt" solved in: 66 milliseconds
-"board7x7.txt" solved in: 10948 milliseconds // around 11s
-"board8x8.txt" solved in: 67644 milliseconds // around 1.1m
+"board4x4.txt" solved in: 7 milliseconds
+"board5x5.txt" solved in: 17 milliseconds
+"board6x6.txt" solved in: 64 milliseconds
+"board7x7.txt" solved in: 11155 milliseconds // around 11s
+"board8x8.txt" solved in: 68544 milliseconds // around 1.1m
+
+ReleaseMode: -O2
+BacktrackSolver
+"board3x3.txt" solved in: 4 milliseconds
+"board4x4.txt" solved in: 591960 milliseconds // around 9.8m
+
+ForwardCheckingSolver
+"board3x3.txt" solved in: 0.01 milliseconds
+"board4x4.txt" solved in: 1 milliseconds
+"board5x5.txt" solved in: 2 milliseconds
+"board6x6.txt" solved in: 7 milliseconds
+"board7x7.txt" solved in: 1283 milliseconds // around 1.3s
+"board8x8.txt" solved in: 8120 milliseconds // around 8.4s

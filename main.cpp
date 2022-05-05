@@ -37,20 +37,34 @@ int main(int argc, char *argv[]) {
       board.clear();
       shared_ptr<KenKenSolver> bt_solver(new BacktrackSolver(board));
       BenchmarkingSolver bm_bt_solver{shared_ptr<KenKenSolver>(bt_solver)};
-      bm_bt_solver.solve();
-      qDebug() << board_name << "solved in:" << bm_bt_solver.measured_msecs()
+
+      int64_t time = 0;
+      int simulation_rounds = 10;
+      for(int i = 0; i < simulation_rounds; i++) {
+        bm_bt_solver->board().clear();
+        bm_bt_solver.solve();
+        time += bm_bt_solver.measured_msecs();
+      }
+      qDebug() << board_name << "solved in:" << time / simulation_rounds
                << "milliseconds";
       qDebug() << bm_bt_solver->board();
       assert(bm_bt_solver->board().valid_solution());
     }
 
-    if (board.size() <= 8) {
+    if (board.size() <= 6) {
       qDebug() << "ForwardCheckingSolver";
       board.clear();
       shared_ptr<KenKenSolver> fd_solver(new ForwardCheckingSolver(board));
       BenchmarkingSolver bm_fd_solver{shared_ptr<KenKenSolver>(fd_solver)};
-      bm_fd_solver.solve();
-      qDebug() << board_name << "solved in:" << bm_fd_solver.measured_msecs()
+
+      int64_t time = 0;
+      int simulation_rounds = 10;
+      for(int i = 0; i < simulation_rounds; i++) {
+        bm_fd_solver->board().clear();
+        bm_fd_solver.solve();
+        time += bm_fd_solver.measured_msecs();
+      }
+      qDebug() << board_name << "solved in:" << time / simulation_rounds
                << "milliseconds";
       qDebug() << bm_fd_solver->board();
       assert(bm_fd_solver->board().valid_solution());

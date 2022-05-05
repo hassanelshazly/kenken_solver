@@ -14,7 +14,7 @@ public:
 
   virtual void solve() = 0;
 
-  KenKenBoard board() const;
+  KenKenBoard &board();
   void set_board(const KenKenBoard &board);
 
 protected:

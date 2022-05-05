@@ -149,7 +149,6 @@ public:
   uint8_t size() const;
 
   vector<Constraint> constraints() const;
-  void set_constraints(const vector<Constraint> &constraints);
 
 private:
   void check_cell(const Cell &cell) const {

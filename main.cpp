@@ -20,15 +20,16 @@ int main(int argc, char *argv[]) {
       {"board4x4.txt", "board4x4_sol.txt"},
       {"board5x5.txt", "board5x5_sol.txt"},
       {"board6x6.txt", "board6x6_sol.txt"},
-      {"board7x7.txt", "board7x7_sol.txt"}};
+      {"board7x7.txt", "board7x7_sol.txt"},
+  };
 
   for (const auto &[board_name, solution_name] : borads) {
     KenKenBoard board =
         generateor.generate_from_file(examples_path + board_name);
-    assert(board.vaild_board());
+    assert(board.valid_board());
 
     board.set_board(generateor.read_solution(examples_path + solution_name));
-    assert(board.vaild_solution());
+    assert(board.valid_solution());
 
     if (board.size() <= 3) {
       qDebug() << "BacktrackSolver";
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
       qDebug() << board_name << "solved in:" << bm_bt_solver.measured_msecs()
                << "milliseconds";
       qDebug() << bm_bt_solver->board();
-      assert(bm_bt_solver->board().vaild_solution());
+      assert(bm_bt_solver->board().valid_solution());
     }
 
     if (board.size() <= 7) {
@@ -51,21 +52,9 @@ int main(int argc, char *argv[]) {
       qDebug() << board_name << "solved in:" << bm_fd_solver.measured_msecs()
                << "milliseconds";
       qDebug() << bm_fd_solver->board();
-      assert(bm_fd_solver->board().vaild_solution());
+      assert(bm_fd_solver->board().valid_solution());
     }
   }
-
-  //  assert(!Constraint('+', 5, {{1, 1}, {2, 2}, {3, 2}}).check_adjacency());
-  //  assert(Constraint('+', 1, {{0, 2}, {0, 3}}).check_adjacency());
-  //  assert(Constraint('+', 6, {{1, 0}, {2, 0}, {3, 0}}).check_adjacency());
-  //  assert(Constraint('+', 24, {{1, 1}, {1, 2}, {1, 3}}).check_adjacency());
-  //  assert(Constraint('+', 8, {{2, 1}, {2, 2}, {3, 1}}).check_adjacency());
-  //  assert(Constraint('+', 2, {{2, 3}, {3, 3}}).check_adjacency());
-  //  assert(Constraint('+', 1, {{3, 2}}).check_adjacency());
-
-  //  for (int i = 0; i < board_3.size(); i++)
-  //    for (int j = 0; j < board_3.size(); j++)
-  //      qDebug() << board_3.cell_domain({i, j});
 
   return 0;
   return a.exec();

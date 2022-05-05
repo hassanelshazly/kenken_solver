@@ -1,17 +1,33 @@
 #include "constraint.h"
 
+char Constraint::operation() const
+{
+  return m_operation;
+}
 
-char Constraint::operation() const { return m_operation; }
+void Constraint::set_operation(char operation)
+{
+  m_operation = operation;
+}
 
-void Constraint::set_operation(char operation) { m_operation = operation; }
+set<Cell> Constraint::cells() const
+{
+  return m_cells;
+}
 
-set<Cell> Constraint::cells() const { return m_cells; }
+void Constraint::set_cells(const set<Cell> &cells)
+{
+  m_cells = cells;
+}
 
-void Constraint::set_cells(const set<Cell> &cells) { m_cells = cells; }
+int64_t Constraint::result() const {
+  return m_result;
+}
 
-int64_t Constraint::result() const { return m_result; }
-
-void Constraint::set_result(const int64_t &result) { m_result = result; }
+void Constraint::set_result(const int64_t &result)
+{
+  m_result = result;
+}
 
 QDebug operator<<(QDebug dbg, const Cell &cell) {
   dbg.nospace() << "(" << cell.first << ", " << cell.second << ")";

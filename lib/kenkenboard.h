@@ -16,10 +16,10 @@ public:
   KenKenBoard();
   KenKenBoard(uint8_t size);
 
-  bool vaild_solution() const {
+  bool valid_solution() const {
     if (!check_rows_and_cols())
       return false;
-    if (!follow_constraints())
+    if (!satisfy_constraints())
       return false;
     if(missed_cells())
       return false;
@@ -34,10 +34,10 @@ public:
     return true;
   }
 
-  bool vaild_board() const {
+  bool valid_board() const {
     try {
       for (const Constraint &constraint : m_constraints)
-        if(!vaild_constraint(constraint))
+        if(!valid_constraint(constraint))
           return false;
     } catch (const exception& ex) {
       return false;
@@ -48,15 +48,22 @@ public:
     return true;
   }
 
-  bool follow_constraints() const {
+  bool satisfy_constraints() const {
     for (const Constraint &constraint : m_constraints)
-      if (!follow_constraint(constraint))
+      if (!satisfy_constraint(constraint))
         return false;
     return true;
   }
 
-  uint8_t get(const Cell &cell) const { return m_board[cell.first][cell.second]; }
-  void clear(const Cell &cell) { m_board[cell.first][cell.second] = 0; }
+  uint8_t get(const Cell &cell) const {
+    check_cell(cell);
+    return m_board[cell.first][cell.second];
+  }
+
+  void clear(const Cell &cell) {
+    check_cell(cell);
+    m_board[cell.first][cell.second] = 0;
+  }
 
   void clear() {
     for (int i = 0; i < m_size; i++)
@@ -75,7 +82,7 @@ public:
     for (const Constraint &constraint : m_constraints)
       if (constraint.includes(cell))
         return constraint;
-    return Constraint(); // TODO: Change to optional
+    throw InvalidCellException();
   }
 
   void set(const Cell &cell, uint8_t value) {
@@ -99,7 +106,7 @@ public:
     m_constraints.push_back(constraint);
   }
 
-  vector<uint8_t> cell_domain(const Cell& cell) {
+  vector<uint8_t> cell_domain(const Cell& cell) const {
     check_cell(cell);
     std::set<uint8_t> domain = constraint_domain(cell);
 
@@ -112,15 +119,15 @@ public:
     return total_domain;
   }
 
-  std::set<uint8_t> constraint_domain(const Cell& cell) {
-//    check_cell(cell);
+  std::set<uint8_t> constraint_domain(const Cell& cell) const {
+    check_cell(cell);
     Constraint constraint = get_constraint(cell);
     vector<uint8_t> values = get_values(constraint);
     return  constraint.get_domain(values, m_size);
   }
 
-  std::set<uint8_t> rc_domain(const Cell& cell) {
-//    check_cell(cell);
+  std::set<uint8_t> rc_domain(const Cell& cell) const {
+    check_cell(cell);
     std::set<uint8_t> domain;
     for(int i = 1; i <= m_size; i++)
       domain.insert(i);
@@ -132,52 +139,55 @@ public:
     return domain;
   }
 
-  class InvaildSizeException : exception {};
-  class InvaildCellException : exception {};
-  class InvaildValueException : exception {};
-  class InvaildConstraintException : exception {};
+  class InvalidSizeException : exception {};
+  class InvalidCellException : exception {};
+  class InvalidValueException : exception {};
+  class InvalidConstraintException : exception {};
 
   friend QDebug operator<<(QDebug dbg, const KenKenBoard &board);
 
   uint8_t size() const;
 
+  vector<Constraint> constraints() const;
+  void set_constraints(const vector<Constraint> &constraints);
+
 private:
   void check_cell(const Cell &cell) const {
     if (cell.first >= m_size || cell.second >= m_size)
-      throw InvaildCellException();
+      throw InvalidCellException();
   }
 
   void check_value(uint8_t value) const {
     if (value == 0 || value > m_size)
-      throw InvaildValueException();
+      throw InvalidValueException();
   }
 
   void check_constraint(const Constraint &constraint) const {
-    if (!vaild_constraint(constraint))
-      throw InvaildConstraintException();
+    if (!valid_constraint(constraint))
+      throw InvalidConstraintException();
 
     for (const Cell &cell : constraint.cells()) {
       if (belongs_to_constraint(cell))
-        throw InvaildConstraintException();
+        throw InvalidConstraintException();
     }
   }
 
-  bool vaild_constraint(const Constraint &constraint) const {
-    if (!constraint.vaild())
+  bool valid_constraint(const Constraint &constraint) const {
+    if (!constraint.valid())
       return false;
 
     try {
       for (const Cell &cell : constraint.cells())
         check_cell(cell);
-    } catch (const InvaildCellException& ex) {
+    } catch (const InvalidCellException& ex) {
       return false;
     }
     return true;
   }
 
-  bool follow_constraint(const Constraint &constraint) const {
+  bool satisfy_constraint(const Constraint &constraint) const {
     vector<uint8_t> values = get_values(constraint);
-    return constraint.vaild_values(values);
+    return constraint.satisfy(values);
   }
 
   vector<uint8_t> get_values(const Constraint &constraint) const {

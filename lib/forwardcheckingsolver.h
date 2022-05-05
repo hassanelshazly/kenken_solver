@@ -7,9 +7,7 @@ class ForwardCheckingSolver : public KenKenSolver
 {
 public:
   ForwardCheckingSolver();
-
   ForwardCheckingSolver(KenKenBoard board) : KenKenSolver(board) {}
-
   ~ForwardCheckingSolver() {}
 
   void solve() override {
@@ -18,19 +16,19 @@ public:
 
 private:
   bool backtrack_solve(const optional<Cell>& opt_cell) {
-//    qDebug() << "Vaild:" << m_board.vaild_solution() ;
-//    qDebug() << "Compelete:" << m_board.complete_solution() ;
-//    qDebug() << m_board;
+#ifdef DEBUG_SOLVER
+    qDebug() << "Valid:" << m_board.valid_solution() ;
+    qDebug() << "Compelete:" << m_board.complete_solution() ;
+    qDebug() << m_board;
+#endif
 
-    if(m_board.vaild_solution()) {
+    if(m_board.valid_solution())
       return true;
-    }
 
     if(m_board.complete_solution())
       return false;
 
     if(!opt_cell.has_value())
-      // Something wrong, shouldn't get here
       return false;
 
     Cell cell = opt_cell.value();
@@ -42,7 +40,7 @@ private:
         m_board.clear(cell);
     }
 
-     return false;
+    return false;
   }
 };
 

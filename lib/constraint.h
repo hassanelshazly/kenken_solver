@@ -19,7 +19,7 @@ public:
 
   bool includes(const Cell &cell) const { return m_cells.count(cell); }
 
-  bool vaild() const {
+  bool valid() const {
     if (!check_adjacency())
       return false;
     if (check_operation())
@@ -33,15 +33,13 @@ public:
     return true;
   }
 
-  bool vaild_values(const vector<uint8_t> &values) const {
+  bool satisfy(const vector<uint8_t> &values) const {
     assert(m_cells.size() == values.size());
-    assert(vaild());
+    assert(valid());
     return m_result == apply(values);
   }
 
-  set<uint8_t> get_domain(vector<uint8_t> values, int64_t board_size) {
-    set<uint8_t> domain;
-
+  set<uint8_t> get_domain(vector<uint8_t> values, int64_t board_size) const {
     auto can_place = [&](uint8_t value) {
       values.push_back(value);
       bool result =
@@ -57,11 +55,11 @@ public:
       return result;
     };
 
+    set<uint8_t> domain;
     for (uint8_t i = 1; i <= board_size; i++) {
       if (can_place(i))
         domain.insert(i);
     }
-
     return domain;
   }
 
@@ -85,7 +83,6 @@ private:
     return !allowed_operations.count(m_operation);
   }
 
-public:
   bool check_adjacency() const {
     if (m_cells.size() < 2)
       return true;
@@ -151,7 +148,7 @@ private:
     uint8_t v1 = max(values[0], values[1]);
     uint8_t v2 = min(values[0], values[1]);
     if (v1 % v2 != 0)
-      return -1; // Invaild TODO: find a better way
+      return -1;
     return v1 / v2;
   };
 

@@ -35,7 +35,7 @@ public:
     return board;
   }
 
-  vector<vector<uint8_t>> read_board(QString file_path) {
+  vector<vector<uint8_t>> read_solution(QString file_path) {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
       throw InvaildFileException();
@@ -84,7 +84,7 @@ private:
       return Constraint::MULTIPLY;
     if(op == "/" || op == "d" || op == "div" || op == "divide")
       return Constraint::DIVIDE;
-    if(op == "e" || op == "eq" || op == "equal" )
+    if(op == "=" || op == "e" || op == "eq" || op == "equal" )
       return Constraint::EQUAL;
 
     throw UndefinedOpeartionException();

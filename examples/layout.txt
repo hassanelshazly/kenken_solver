@@ -1,23 +1,18 @@
 size
-opeartion result cells
+operation result cells
 
 size:
-	size of the baord from 2 to 16
+	size of the board from 2 to 16
 
-opeartion:
+operation:
 	+, a, add
 	-, s, sub, subtract
 	*, m, mul, multiply
 	/, d, div, divide
-	e, eq, equal
+	=, e, eq, equal
 	
 result:
-	postive int
+	positive int
 
 cells:
-	(x1,y1) (x2,y2) no spaces, from 0:size-1	
-	
-	
-3x3 Solved In: 32 milliseconds
-4x4 Solved In: 5437999 milliseconds // 1.5 h
-
+	(x1,y1) (x2,y2) no spaces, from 0:size-1

@@ -116,7 +116,7 @@ public:
   static constexpr char SUBTRACT = '-';
   static constexpr char MULTIPLY = '*';
   static constexpr char DIVIDE = '/';
-  static constexpr char EQUAL = 'e';
+  static constexpr char EQUAL = '=';
 
 private:
   char m_operation;

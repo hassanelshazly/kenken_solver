@@ -26,7 +26,16 @@ public:
 
   void end() {
     msecs = timer.elapsed();
+    nsecs = timer.nsecsElapsed();
     timer.invalidate();
+  }
+
+  int64_t measured_nsecs() {
+    return nsecs;
+  }
+
+  int64_t measured_usecs() {
+    return round(nsecs / 1000.0);
   }
 
   int64_t measured_msecs() {
@@ -44,7 +53,8 @@ public:
 private:
   shared_ptr<KenKenSolver> m_solver;
   QElapsedTimer timer;
-  qint64 msecs;
+  qint64 msecs = 0;
+  qint64 nsecs = 0;
 };
 
 #endif // BENCHMARKINGSOLVER_H

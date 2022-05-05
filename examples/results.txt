@@ -1,0 +1,10 @@
+BacktrackSolver
+"board3x3.txt" solved in: 25 milliseconds
+"board4x4.txt" solved in: 5437999 milliseconds // around 1.5h
+
+ForwardCheckingSolver
+"board3x3.txt" solved in: 0.1 milliseconds
+"board4x4.txt" solved in: 9 milliseconds
+"board5x5.txt" solved in: 19 milliseconds
+"board6x6.txt" solved in: 66 milliseconds
+"board7x7.txt" solved in: 10948 milliseconds // around 11s

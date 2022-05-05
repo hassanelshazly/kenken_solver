@@ -8,3 +8,4 @@ ForwardCheckingSolver
 "board5x5.txt" solved in: 19 milliseconds
 "board6x6.txt" solved in: 66 milliseconds
 "board7x7.txt" solved in: 10948 milliseconds // around 11s
+"board8x8.txt" solved in: 67644 milliseconds // around 1.1m

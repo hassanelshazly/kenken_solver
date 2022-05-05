@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
       {"board5x5.txt", "board5x5_sol.txt"},
       {"board6x6.txt", "board6x6_sol.txt"},
       {"board7x7.txt", "board7x7_sol.txt"},
+      {"board8x8.txt", "board8x8_sol.txt"},
   };
 
   for (const auto &[board_name, solution_name] : borads) {
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
       assert(bm_bt_solver->board().valid_solution());
     }
 
-    if (board.size() <= 7) {
+    if (board.size() <= 8) {
       qDebug() << "ForwardCheckingSolver";
       board.clear();
       shared_ptr<KenKenSolver> fd_solver(new ForwardCheckingSolver(board));

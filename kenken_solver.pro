@@ -20,6 +20,7 @@ SOURCES += \
     lib/benchmarkingsolver.cpp \
     lib/boardgenerator.cpp \
     lib/constraint.cpp \
+    lib/forwardcheckingsolver.cpp \
     lib/kenkenboard.cpp \
     lib/kenkensolver.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     lib/backtracksolver.h \
     lib/benchmarkingsolver.h \
     lib/boardgenerator.h \
+    lib/forwardcheckingsolver.h \
     lib/kenkensolver.h \
     ui/kenken.h \
     lib/constraint.h \

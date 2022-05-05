@@ -13,7 +13,7 @@ typedef pair<uint8_t, uint8_t> Cell;
 
 class Constraint {
 public:
-  Constraint();
+  Constraint() : m_operation(EQUAL), m_result(0) {}
   Constraint(char operation, int64_t result, set<Cell> cells)
       : m_operation(operation), m_result(result), m_cells(cells) {}
 
@@ -37,6 +37,32 @@ public:
     assert(m_cells.size() == values.size());
     assert(vaild());
     return m_result == apply(values);
+  }
+
+  set<uint8_t> get_domain(vector<uint8_t> values, int64_t board_size) {
+    set<uint8_t> domain;
+
+    auto can_place = [&](uint8_t value) {
+      values.push_back(value);
+      bool result =
+          m_operation == EQUAL      ? value == m_result
+          : m_operation == ADD      ? ADD_FUNC(values) <= m_result
+          : m_operation == MULTIPLY ? MULTIPLY_FUNC(values) <= m_result
+          : m_operation == SUBTRACT
+              ? (values.size() == 1 || SUBTRACT_FUNC(values) == m_result)
+          : m_operation == DIVIDE
+              ? (values.size() == 1 || DIVIDE_FUNC(values) == m_result)
+              : false;
+      values.pop_back();
+      return result;
+    };
+
+    for (uint8_t i = 1; i <= board_size; i++) {
+      if (can_place(i))
+        domain.insert(i);
+    }
+
+    return domain;
   }
 
   int64_t apply(const vector<uint8_t> &values) const {

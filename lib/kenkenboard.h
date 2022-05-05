@@ -61,7 +61,7 @@ public:
   void clear() {
     for (int i = 0; i < m_size; i++)
       for (int j = 0; j < m_size; j++)
-        m_board[i][j] == 0;
+        m_board[i][j] = 0;
   }
 
   bool belongs_to_constraint(const Cell &cell) const {
@@ -69,6 +69,13 @@ public:
       if (constraint.includes(cell))
         return true;
     return false;
+  }
+
+  Constraint get_constraint(const Cell &cell) const {
+    for (const Constraint &constraint : m_constraints)
+      if (constraint.includes(cell))
+        return constraint;
+    return Constraint(); // TODO: Change to optional
   }
 
   void set(const Cell &cell, uint8_t value) {
@@ -90,6 +97,39 @@ public:
   void add_constraint(const Constraint &constraint) {
     check_constraint(constraint);
     m_constraints.push_back(constraint);
+  }
+
+  vector<uint8_t> cell_domain(const Cell& cell) {
+    check_cell(cell);
+    std::set<uint8_t> domain = constraint_domain(cell);
+
+    vector<uint8_t> total_domain;
+    for(const uint8_t value : rc_domain(cell)) {
+      if(domain.count(value))
+        total_domain.push_back(value);
+    }
+
+    return total_domain;
+  }
+
+  std::set<uint8_t> constraint_domain(const Cell& cell) {
+//    check_cell(cell);
+    Constraint constraint = get_constraint(cell);
+    vector<uint8_t> values = get_values(constraint);
+    return  constraint.get_domain(values, m_size);
+  }
+
+  std::set<uint8_t> rc_domain(const Cell& cell) {
+//    check_cell(cell);
+    std::set<uint8_t> domain;
+    for(int i = 1; i <= m_size; i++)
+      domain.insert(i);
+
+    for(int i = 0; i < m_size; i++){
+      domain.erase(m_board[cell.first][i]);
+      domain.erase(m_board[i][cell.second]);
+    }
+    return domain;
   }
 
   class InvaildSizeException : exception {};
@@ -136,11 +176,18 @@ private:
   }
 
   bool follow_constraint(const Constraint &constraint) const {
+    vector<uint8_t> values = get_values(constraint);
+    return constraint.vaild_values(values);
+  }
+
+  vector<uint8_t> get_values(const Constraint &constraint) const {
     vector<uint8_t> values;
     for (const Cell &cell : constraint.cells()) {
-      values.push_back(get(cell));
+      uint8_t value = m_board[cell.first][cell.second];
+      if(value != 0)
+        values.push_back(value);
     }
-    return constraint.vaild_values(values);
+    return values;
   }
 
   bool check_rows_and_cols() const {

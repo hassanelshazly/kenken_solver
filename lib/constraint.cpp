@@ -1,6 +1,5 @@
 #include "constraint.h"
 
-Constraint::Constraint() {}
 
 char Constraint::operation() const { return m_operation; }
 
@@ -29,7 +28,7 @@ QDebug operator<<(QDebug dbg, const Constraint &constraint) {
     return dbg;
   }
 
-  int i = 0;
+  size_t i = 0;
   for (auto it = constraint.m_cells.begin(); i < constraint.m_cells.size() - 1;
        ++it, ++i)
     dbg.nospace() << *it << ", ";

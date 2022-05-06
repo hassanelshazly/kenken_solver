@@ -12,7 +12,7 @@ public:
   }
   virtual ~KenKenSolver(){}
 
-  void solve() {
+  virtual void solve() {
      backtrack_solve(optional<Cell>({0, 0}));
   }
 

@@ -13,7 +13,7 @@ typedef pair<uint8_t, uint8_t> Cell;
 
 class Constraint {
 public:
-  Constraint() : m_operation(EQUAL), m_result(0) {}
+  Constraint();
   Constraint(char operation, int64_t result, set<Cell> cells)
       : m_operation(operation), m_result(result), m_cells(cells) {}
 

@@ -9,7 +9,7 @@ public:
   ArcConsistencySolver();
 
   ArcConsistencySolver(KenKenBoard board) : KenKenSolver(board) {}
-  ~ArcConsistencySolver() {}
+  virtual ~ArcConsistencySolver() {}
 
 private:
   set<uint8_t> get_domian(const Cell& cell) override {

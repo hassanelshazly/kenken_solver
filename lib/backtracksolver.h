@@ -8,7 +8,7 @@ class BacktrackSolver : public KenKenSolver
 public:
   BacktrackSolver();
   BacktrackSolver(KenKenBoard board) : KenKenSolver(board) {}
-  ~BacktrackSolver() {}
+  virtual ~BacktrackSolver() {}
 
 private:
    set<uint8_t> get_domian(const Cell& cell) override {

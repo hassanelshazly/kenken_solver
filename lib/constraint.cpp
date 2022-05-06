@@ -1,5 +1,10 @@
 #include "constraint.h"
 
+Constraint::Constraint() : m_operation(EQUAL), m_result(0)
+{
+
+}
+
 char Constraint::operation() const
 {
   return m_operation;

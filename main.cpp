@@ -1,12 +1,21 @@
-#include "lib/backtracksolver.h"
-#include "lib/benchmarkingsolver.h"
 #include "lib/boardgenerator.h"
-#include "lib/forwardcheckingsolver.h"
-#include "lib/arcconsistencysolver.h"
-#include "lib/kenkenboard.h"
+#include "lib/bmbacktracksolver.h"
+#include "lib/bmforwardcheckingsolver.h"
+#include "lib/bmarcconsistencysolver.h"
+
 #include "ui/kenken.h"
 
 #include <QApplication>
+
+int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
+  int64_t time = 0;
+  for (int i = 0; i < simulation_rounds; i++) {
+    solver->board().clear();
+    solver->solve();
+    time += dynamic_cast<Benchmarking *>(solver)->measured_msecs();
+  }
+  return time / simulation_rounds;
+}
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
@@ -36,60 +45,34 @@ int main(int argc, char *argv[]) {
 
     if (board.size() <= 3) {
       qDebug() << "BacktrackSolver";
-      board.clear();
-      shared_ptr<KenKenSolver> bt_solver(new BacktrackSolver(board));
-      BenchmarkingSolver bm_bt_solver{shared_ptr<KenKenSolver>(bt_solver)};
+      BMBacktrackSolver solver(board);
 
-      int64_t time = 0;
-      int simulation_rounds = 1;
-      for (int i = 0; i < simulation_rounds; i++) {
-        bm_bt_solver->board().clear();
-        bm_bt_solver.solve();
-        time += bm_bt_solver.measured_usecs();
-      }
-      qDebug() << board_name << "solved in:" << time / simulation_rounds
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "milliseconds";
-      qDebug() << bm_bt_solver->board();
-      assert(bm_bt_solver->board().valid_solution());
+      qDebug() << solver.board();
+      assert(solver.board().valid_solution());
     }
 
     if (board.size() <= 4) {
       qDebug() << "ForwardCheckingSolver";
-      board.clear();
-      shared_ptr<KenKenSolver> fd_solver(new ForwardCheckingSolver(board));
-      BenchmarkingSolver bm_fd_solver{shared_ptr<KenKenSolver>(fd_solver)};
+      BMForwardCheckingSolver solver(board);
 
-      int64_t time = 0;
-      int simulation_rounds = 1;
-      for (int i = 0; i < simulation_rounds; i++) {
-        bm_fd_solver->board().clear();
-        bm_fd_solver.solve();
-        time += bm_fd_solver.measured_usecs();
-      }
-      qDebug() << board_name << "solved in:" << time / simulation_rounds
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "milliseconds";
-      qDebug() << bm_fd_solver->board();
-      assert(bm_fd_solver->board().valid_solution());
+      qDebug() << solver.board();
+      assert(solver.board().valid_solution());
     }
 
 
     if (board.size() <= 9) {
       qDebug() << "ArcConsistencySolver";
       board.clear();
-      shared_ptr<KenKenSolver> ar_solver(new ArcConsistencySolver(board));
-      BenchmarkingSolver bm_ar_solver{shared_ptr<KenKenSolver>(ar_solver)};
+      BMArcConsistencySolver solver(board);
 
-      int64_t time = 0;
-      int simulation_rounds = 1;
-      for (int i = 0; i < simulation_rounds; i++) {
-        bm_ar_solver->board().clear();
-        bm_ar_solver.solve();
-        time += bm_ar_solver.measured_usecs();
-      }
-      qDebug() << board_name << "solved in:" << time / simulation_rounds
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "milliseconds";
-      qDebug() << bm_ar_solver->board();
-      assert(bm_ar_solver->board().valid_solution());
+      qDebug() << solver.board();
+      assert(solver.board().valid_solution());
     }
   }
 

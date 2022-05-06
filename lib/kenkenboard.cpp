@@ -1,12 +1,8 @@
 #include "kenkenboard.h"
 
-KenKenBoard::KenKenBoard() : m_size(MIN_BOARD_SIZE) {}
+KenKenBoard::KenKenBoard() : m_size(MIN_BOARD_SIZE)
+{
 
-KenKenBoard::KenKenBoard(uint8_t size)
-  : m_size(size), m_board(size, vector<uint8_t>(size)) {
-  if (m_size < MIN_BOARD_SIZE || m_size > MAX_BOARD_SIZE) {
-    throw InvalidSizeException();
-  }
 }
 
 uint8_t KenKenBoard::size() const

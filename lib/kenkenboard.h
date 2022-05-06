@@ -14,7 +14,12 @@ using namespace std;
 class KenKenBoard {
 public:
   KenKenBoard();
-  KenKenBoard(uint8_t size);
+  KenKenBoard(uint8_t size)
+    : m_size(size), m_board(size, vector<uint8_t>(size)) {
+    if (m_size < MIN_BOARD_SIZE || m_size > MAX_BOARD_SIZE) {
+      throw InvalidSizeException();
+    }
+  }
 
   bool valid_solution() const {
     if (!check_rows_and_cols())

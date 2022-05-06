@@ -8,7 +8,7 @@ class ForwardCheckingSolver : public KenKenSolver
 public:
   ForwardCheckingSolver();
   ForwardCheckingSolver(KenKenBoard board) : KenKenSolver(board) {}
-  ~ForwardCheckingSolver() {}
+  virtual ~ForwardCheckingSolver() {}
 
 private:
   set<uint8_t> get_domian(const Cell& cell) override {

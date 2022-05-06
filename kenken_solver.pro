@@ -17,10 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     lib/arcconsistencysolver.cpp \
-    lib/backtracksolver.cpp \
+    lib/backtrackingsolver.cpp \
     lib/benchmarking.cpp \
     lib/bmarcconsistencysolver.cpp \
-    lib/bmbacktracksolver.cpp \
+    lib/bmbacktrackingsolver.cpp \
     lib/bmforwardcheckingsolver.cpp \
     lib/boardgenerator.cpp \
     lib/constraint.cpp \
@@ -32,10 +32,10 @@ SOURCES += \
 
 HEADERS += \
     lib/arcconsistencysolver.h \
-    lib/backtracksolver.h \
+    lib/backtrackingsolver.h \
     lib/benchmarking.h \
     lib/bmarcconsistencysolver.h \
-    lib/bmbacktracksolver.h \
+    lib/bmbacktrackingsolver.h \
     lib/bmforwardcheckingsolver.h \
     lib/boardgenerator.h \
     lib/forwardcheckingsolver.h \

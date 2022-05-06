@@ -1,30 +1,31 @@
-DebugMode:
+DebugMode: Not Updated Values
 BacktrackSolver
-"board3x3.txt" solved in: 21 milliseconds
-"board4x4.txt" solved in: 5437999 milliseconds // around 1.5h
+"board3x3.txt" solved in: 21 ms
+"board4x4.txt" solved in: 1.5 h
 
 ArcConsistencySolver
-"board3x3.txt" solved in: 0.1 milliseconds
-"board4x4.txt" solved in: 7 milliseconds
-"board5x5.txt" solved in: 17 milliseconds
-"board6x6.txt" solved in: 64 milliseconds
-"board7x7.txt" solved in: 11155 milliseconds // around 11s
-"board8x8.txt" solved in: 68544 milliseconds // around 1.1m
+"board3x3.txt" solved in: 0.1 ms
+"board4x4.txt" solved in: 7 ms
+"board5x5.txt" solved in: 17 ms
+"board6x6.txt" solved in: 64 ms
+"board7x7.txt" solved in: 11 s
+"board8x8.txt" solved in: 1.1 min
 
 ReleaseMode: -O2
 BacktrackSolver
-"board3x3.txt" solved in: 4 milliseconds
-"board4x4.txt" solved in: 591960 milliseconds // around 9.8m
+"board3x3.txt" solved in: 4 ms
+"board4x4.txt" solved in: 11 min
 
 ForwardCheckingSolver
-"board3x3.txt" solved in: 29 milliseconds
-"board4x4.txt" solved in: 222 milliseconds
+"board3x3.txt" solved in: 26 us
+"board4x4.txt" solved in: 188 ms
+"board5x5.txt" solved in: 22 min
 
 ArcConsistencySolver
-"board3x3.txt" solved in: 11 us
-"board4x4.txt" solved in: 603 us
-"board5x5.txt" solved in: 388 us
-"board6x6.txt" solved in: 513 us
-"board7x7.txt" solved in: 12 milliseconds
-"board8x8.txt" solved in: 129 milliseconds
-"board9x9.txt" solved in: 2500 milliseconds // around 2.5s
+"board3x3.txt" solved in: 10 us
+"board4x4.txt" solved in: 411 us
+"board5x5.txt" solved in: 334 us
+"board6x6.txt" solved in: 419 us
+"board7x7.txt" solved in: 8 ms
+"board8x8.txt" solved in: 91 ms
+"board9x9.txt" solved in: 1984 ms // around 2s

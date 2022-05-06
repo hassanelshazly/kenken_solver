@@ -1,5 +1,5 @@
 #include "lib/boardgenerator.h"
-#include "lib/bmbacktracksolver.h"
+#include "lib/bmbacktrackingsolver.h"
 #include "lib/bmforwardcheckingsolver.h"
 #include "lib/bmarcconsistencysolver.h"
 
@@ -12,15 +12,12 @@ int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
   for (int i = 0; i < simulation_rounds; i++) {
     solver->board().clear();
     solver->solve();
-    time += dynamic_cast<Benchmarking *>(solver)->measured_msecs();
+    time += dynamic_cast<Benchmarking *>(solver)->measured_usecs();
   }
   return time / simulation_rounds;
 }
 
 int main(int argc, char *argv[]) {
-  QApplication a(argc, argv);
-  //  KenKen w;
-  //  w.show();
 
   QString examples_path = "../kenken_solver/examples/";
   BoardGenerator generateor;
@@ -43,9 +40,9 @@ int main(int argc, char *argv[]) {
     board.set_board(generateor.read_solution(examples_path + solution_name));
     assert(board.valid_solution());
 
-    if (board.size() <= 3) {
+    if (board.size() <= 4) {
       qDebug() << "BacktrackSolver";
-      BMBacktrackSolver solver(board);
+      BMBacktrackingSolver solver(board);
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "milliseconds";
@@ -53,7 +50,7 @@ int main(int argc, char *argv[]) {
       assert(solver.board().valid_solution());
     }
 
-    if (board.size() <= 4) {
+    if (board.size() <= 5) {
       qDebug() << "ForwardCheckingSolver";
       BMForwardCheckingSolver solver(board);
 
@@ -69,7 +66,7 @@ int main(int argc, char *argv[]) {
       board.clear();
       BMArcConsistencySolver solver(board);
 
-      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver, 10)
                << "milliseconds";
       qDebug() << solver.board();
       assert(solver.board().valid_solution());
@@ -77,5 +74,10 @@ int main(int argc, char *argv[]) {
   }
 
   return 0;
+
+  QApplication a(argc, argv);
+  KenKen w;
+  w.show();
+
   return a.exec();
 }

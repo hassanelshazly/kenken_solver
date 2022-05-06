@@ -21,7 +21,7 @@ public:
       return false;
     if (!satisfy_constraints())
       return false;
-    if(missed_cells())
+    if (missed_cells())
       return false;
     return true;
   }
@@ -29,7 +29,7 @@ public:
   bool complete_solution() const {
     for (int i = 0; i < m_size; i++)
       for (int j = 0; j < m_size; j++)
-        if(m_board[i][j] == 0)
+        if (m_board[i][j] == 0)
           return false;
     return true;
   }
@@ -37,13 +37,13 @@ public:
   bool valid_board() const {
     try {
       for (const Constraint &constraint : m_constraints)
-        if(!valid_constraint(constraint))
+        if (!valid_constraint(constraint))
           return false;
-    } catch (const exception& ex) {
+    } catch (const exception &ex) {
       return false;
     }
 
-    if(missed_cells())
+    if (missed_cells())
       return false;
     return true;
   }
@@ -106,33 +106,67 @@ public:
     m_constraints.push_back(constraint);
   }
 
-  vector<uint8_t> cell_domain(const Cell& cell) const {
-    check_cell(cell);
-    std::set<uint8_t> domain = constraint_domain(cell);
-
-    vector<uint8_t> total_domain;
-    for(const uint8_t value : rc_domain(cell)) {
-      if(domain.count(value))
-        total_domain.push_back(value);
-    }
-
-    return total_domain;
+  std::set<uint8_t> total_domain() const {
+    std::set<uint8_t> domain;
+    for (int i = 1; i <= m_size; i++)
+      domain.insert(i);
+    return domain;
   }
 
-  std::set<uint8_t> constraint_domain(const Cell& cell) const {
+   std::set<uint8_t> fd_domain(const Cell &cell) const {
+    static const vector<pair<int, int>> neighbors = {
+        {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
+    Constraint constraint = get_constraint(cell);
+    vector<uint8_t> values;
+
+    std::set<uint8_t> neighbors_domain = total_domain();
+
+    auto [i, j] = cell;
+    for (const auto &[x, y] : neighbors) {
+      if (x + i >= 0 && x + i < m_size && y + j >= 0 && y + j <= m_size) {
+        Cell neighbor = {x + i, y + j};
+        uint8_t value = m_board[neighbor.first][neighbor.second];
+        if (value != 0 && constraint.includes(neighbor))
+          values.push_back(value);
+         neighbors_domain.erase(value);
+      }
+    }
+    std::set<uint8_t> const_domain = constraint.get_domain(values, m_size);
+
+    std::set<uint8_t> domain;
+    for (const uint8_t value : neighbors_domain) {
+      if (const_domain.count(value))
+        domain.insert(value);
+    }
+
+    return domain;
+  }
+
+  std::set<uint8_t> ar_domain(const Cell &cell) const {
+    check_cell(cell);
+    std::set<uint8_t> const_domain = constraint_domain(cell);
+
+    std::set<uint8_t> domain;
+    for (const uint8_t value : rc_domain(cell)) {
+      if (const_domain.count(value))
+        domain.insert(value);
+    }
+
+    return domain;
+  }
+
+  std::set<uint8_t> constraint_domain(const Cell &cell) const {
     check_cell(cell);
     Constraint constraint = get_constraint(cell);
     vector<uint8_t> values = get_values(constraint);
-    return  constraint.get_domain(values, m_size);
+    return constraint.get_domain(values, m_size);
   }
 
-  std::set<uint8_t> rc_domain(const Cell& cell) const {
+  std::set<uint8_t> rc_domain(const Cell &cell) const {
     check_cell(cell);
-    std::set<uint8_t> domain;
-    for(int i = 1; i <= m_size; i++)
-      domain.insert(i);
+    std::set<uint8_t> domain = total_domain();
 
-    for(int i = 0; i < m_size; i++){
+    for (int i = 0; i < m_size; i++) {
       domain.erase(m_board[cell.first][i]);
       domain.erase(m_board[i][cell.second]);
     }
@@ -178,7 +212,7 @@ private:
     try {
       for (const Cell &cell : constraint.cells())
         check_cell(cell);
-    } catch (const InvalidCellException& ex) {
+    } catch (const InvalidCellException &ex) {
       return false;
     }
     return true;
@@ -193,7 +227,7 @@ private:
     vector<uint8_t> values;
     for (const Cell &cell : constraint.cells()) {
       uint8_t value = m_board[cell.first][cell.second];
-      if(value != 0)
+      if (value != 0)
         values.push_back(value);
     }
     return values;
@@ -217,7 +251,7 @@ private:
     return true;
   }
 
-  bool missed_cells() const{
+  bool missed_cells() const {
     map<Cell, int> cells_mp;
     for (const Constraint &constraint : m_constraints)
       for (const Cell &cell : constraint.cells())

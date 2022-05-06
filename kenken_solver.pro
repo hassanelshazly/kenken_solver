@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    lib/arcconsistencysolver.cpp \
     lib/backtracksolver.cpp \
     lib/benchmarkingsolver.cpp \
     lib/boardgenerator.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     ui/kenken.cpp
 
 HEADERS += \
+    lib/arcconsistencysolver.h \
     lib/backtracksolver.h \
     lib/benchmarkingsolver.h \
     lib/boardgenerator.h \

@@ -43,9 +43,13 @@ public:
     auto can_place = [&](uint8_t value) {
       values.push_back(value);
       bool result =
-          m_operation == EQUAL      ? value == m_result
-          : m_operation == ADD      ? ADD_FUNC(values) <= m_result
-          : m_operation == MULTIPLY ? MULTIPLY_FUNC(values) <= m_result
+          m_operation == EQUAL ? value == m_result
+          : m_operation == ADD
+              ? (values.size() == m_cells.size() ? ADD_FUNC(values) == m_result
+                                                 : ADD_FUNC(values) < m_result)
+          : m_operation == MULTIPLY ? (values.size() == m_cells.size()
+                                           ? MULTIPLY_FUNC(values) == m_result
+                                           : MULTIPLY_FUNC(values) <= m_result)
           : m_operation == SUBTRACT
               ? (values.size() == 1 || SUBTRACT_FUNC(values) == m_result)
           : m_operation == DIVIDE

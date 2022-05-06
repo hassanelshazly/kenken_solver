@@ -1,5 +1,5 @@
-#ifndef KENKENBOARDGENERATOR_H
-#define KENKENBOARDGENERATOR_H
+#ifndef BOARDGENERATOR_H
+#define BOARDGENERATOR_H
 
 #include "kenkenboard.h"
 #include <qfile.h>
@@ -101,4 +101,4 @@ private:
 
 };
 
-#endif // KENKENBOARDGENERATOR_H
+#endif // BOARDGENERATOR_H

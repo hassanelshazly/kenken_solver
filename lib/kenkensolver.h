@@ -20,9 +20,9 @@ public:
   void set_board(const KenKenBoard &board);
 
 private:
-  virtual set<uint8_t> get_domian(const Cell& cell) = 0;
+  virtual vector<uint8_t> get_domian(const Cell& cell) = 0;
 
-  optional<Cell> next_cell(const Cell& cell) const {
+  virtual optional<Cell> next_cell(const Cell& cell)  {
     if(cell.second + 1 < m_board.size())
       return optional<Cell>({cell.first, cell.second + 1});
     else if(cell.first + 1 < m_board.size())
@@ -31,6 +31,7 @@ private:
     return nullopt;
   }
 
+protected:
   bool backtrack_solve(const optional<Cell>& opt_cell) {
 #ifdef DEBUG_SOLVER
     qDebug() << "Valid:" << m_board.valid_solution() ;

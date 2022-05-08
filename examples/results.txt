@@ -29,3 +29,12 @@ ArcConsistencySolver
 "board7x7.txt" solved in: 8 ms
 "board8x8.txt" solved in: 91 ms
 "board9x9.txt" solved in: 1984 ms // around 2s
+
+HeuristicArcConsistencySolver
+"board3x3.txt" solved in: 9 us
+"board4x4.txt" solved in: 49 us
+"board5x5.txt" solved in: 235 us
+"board6x6.txt" solved in: 159 us
+"board7x7.txt" solved in: 7 ms
+"board8x8.txt" solved in: 491 ms
+"board9x9.txt" solved in: 206 ms

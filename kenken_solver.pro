@@ -22,9 +22,11 @@ SOURCES += \
     lib/bmarcconsistencysolver.cpp \
     lib/bmbacktrackingsolver.cpp \
     lib/bmforwardcheckingsolver.cpp \
+    lib/bmheuristicarcconsistencysolver.cpp \
     lib/boardgenerator.cpp \
     lib/constraint.cpp \
     lib/forwardcheckingsolver.cpp \
+    lib/heuristicarcconsistencysolver.cpp \
     lib/kenkenboard.cpp \
     lib/kenkensolver.cpp \
     main.cpp \
@@ -37,8 +39,10 @@ HEADERS += \
     lib/bmarcconsistencysolver.h \
     lib/bmbacktrackingsolver.h \
     lib/bmforwardcheckingsolver.h \
+    lib/bmheuristicarcconsistencysolver.h \
     lib/boardgenerator.h \
     lib/forwardcheckingsolver.h \
+    lib/heuristicarcconsistencysolver.h \
     lib/kenkensolver.h \
     ui/kenken.h \
     lib/constraint.h \

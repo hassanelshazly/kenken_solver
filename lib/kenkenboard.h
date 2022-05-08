@@ -119,22 +119,15 @@ public:
   }
 
    std::set<uint8_t> fd_domain(const Cell &cell) const {
-    static const vector<pair<int, int>> neighbors = {
-        {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
     Constraint constraint = get_constraint(cell);
     vector<uint8_t> values;
 
     std::set<uint8_t> neighbors_domain = total_domain();
-
-    auto [i, j] = cell;
-    for (const auto &[x, y] : neighbors) {
-      if (x + i >= 0 && x + i < m_size && y + j >= 0 && y + j <= m_size) {
-        Cell neighbor = {x + i, y + j};
-        uint8_t value = m_board[neighbor.first][neighbor.second];
-        if (value != 0 && constraint.includes(neighbor))
-          values.push_back(value);
-         neighbors_domain.erase(value);
-      }
+    for (const auto &neighbor : neighbors(cell)) {
+      uint8_t value = m_board[neighbor.first][neighbor.second];
+      if (value != 0 && constraint.includes(neighbor))
+        values.push_back(value);
+      neighbors_domain.erase(value);
     }
     std::set<uint8_t> const_domain = constraint.get_domain(values, m_size);
 
@@ -176,6 +169,19 @@ public:
       domain.erase(m_board[i][cell.second]);
     }
     return domain;
+  }
+
+  vector<Cell> neighbors(const Cell &cell) const {
+    static const vector<pair<int, int>> neighbors_offest = {
+        {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
+    auto [i, j] = cell;
+    vector<Cell> neighbors_cells;
+    for (const auto &[x, y] : neighbors_offest) {
+      if (x + i >= 0 && x + i < m_size && y + j >= 0 && y + j < m_size) {
+       neighbors_cells.push_back({x + i, y + j});
+      }
+    }
+    return neighbors_cells;
   }
 
   class InvalidSizeException : exception {};

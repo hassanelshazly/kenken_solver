@@ -75,6 +75,7 @@ public:
   void set_operation(char operation);
 
   set<Cell> cells() const;
+  uint8_t cells_size() const;
   void set_cells(const set<Cell> &cells);
 
   int64_t result() const;

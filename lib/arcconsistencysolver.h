@@ -9,11 +9,12 @@ public:
   ArcConsistencySolver();
 
   ArcConsistencySolver(KenKenBoard board) : KenKenSolver(board) {}
-  virtual ~ArcConsistencySolver() {}
+  ~ArcConsistencySolver() {}
 
 private:
-  set<uint8_t> get_domian(const Cell& cell) override {
-    return m_board.ar_domain(cell);
+  vector<uint8_t> get_domian(const Cell& cell) override {
+    set<uint8_t> domain = m_board.ar_domain(cell);
+    return vector<uint8_t>(domain.begin(), domain.end());
   }
 };
 

@@ -2,6 +2,7 @@
 #include "lib/bmbacktrackingsolver.h"
 #include "lib/bmforwardcheckingsolver.h"
 #include "lib/bmarcconsistencysolver.h"
+#include "lib/bmheuristicarcconsistencysolver.h"
 
 #include "ui/kenken.h"
 
@@ -40,34 +41,45 @@ int main(int argc, char *argv[]) {
     board.set_board(generateor.read_solution(examples_path + solution_name));
     assert(board.valid_solution());
 
-    if (board.size() <= 4) {
+    if (board.size() <= 0) {
       qDebug() << "BacktrackSolver";
       BMBacktrackingSolver solver(board);
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
-               << "milliseconds";
+               << "microseconds";
       qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
-    if (board.size() <= 5) {
+    if (board.size() <= 0) {
       qDebug() << "ForwardCheckingSolver";
       BMForwardCheckingSolver solver(board);
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
-               << "milliseconds";
+               << "microseconds";
       qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
 
-    if (board.size() <= 9) {
+    if (board.size() <= 0) {
       qDebug() << "ArcConsistencySolver";
       board.clear();
       BMArcConsistencySolver solver(board);
 
-      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver, 10)
-               << "milliseconds";
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
+               << "microseconds";
+      qDebug() << solver.board();
+      assert(solver.board().valid_solution());
+    }
+
+    if (board.size() <= 9) {
+      qDebug() << "HeuristicArcConsistencySolver";
+      board.clear();
+      BMHeuristicArcConsistencySolver solver(board);
+
+      qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
+               << "microseconds";
       qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }

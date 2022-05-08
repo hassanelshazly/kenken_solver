@@ -11,8 +11,9 @@ public:
   virtual ~ForwardCheckingSolver() {}
 
 private:
-  set<uint8_t> get_domian(const Cell& cell) override {
-    return m_board.fd_domain(cell);
+  vector<uint8_t> get_domian(const Cell& cell) override {
+    set<uint8_t> domain = m_board.fd_domain(cell);
+    return vector<uint8_t>(domain.begin(), domain.end());
   }
 };
 

@@ -20,6 +20,11 @@ set<Cell> Constraint::cells() const
   return m_cells;
 }
 
+uint8_t Constraint::cells_size() const
+{
+  return m_cells.size();
+}
+
 void Constraint::set_cells(const set<Cell> &cells)
 {
   m_cells = cells;

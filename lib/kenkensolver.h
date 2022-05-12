@@ -8,7 +8,7 @@ class KenKenSolver
 public:
   KenKenSolver();
   KenKenSolver(KenKenBoard board) : m_board(board) {
-    assert(board.valid_board());
+//    assert(board.valid_board());
   }
   virtual ~KenKenSolver(){}
 
@@ -50,7 +50,7 @@ protected:
 
     Cell cell = opt_cell.value();
     for(uint8_t i : get_domian(cell)) {
-      m_board.set(cell, i);
+      m_board.set_value(cell, i);
       if(backtrack_solve(next_cell(cell)))
         return true;
       else

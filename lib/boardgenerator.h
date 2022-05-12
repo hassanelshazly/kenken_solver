@@ -1,16 +1,36 @@
 #ifndef BOARDGENERATOR_H
 #define BOARDGENERATOR_H
 
-#include "kenkenboard.h"
 #include <qfile.h>
+#include <unordered_map>
+#include <vector>
+
+#include "kenkenboard.h"
 
 class BoardGenerator
 {
+
 public:
   BoardGenerator();
 
+
   KenKenBoard generate_random(uint8_t size) const {
     KenKenBoard board(size);
+    vector<Constraint> constraints = board.generate_random();
+
+    cout << "The random generated constraints: " << endl;
+    for(auto c : constraints)
+    {
+        cout << c.get_operation() << " " << c.get_result();
+
+        set<Cell>s = c.get_cells();
+        for(auto it = s.begin(); it!=s.end(); ++it)
+        {
+            cout << " (" << it->first << "," << it->second << ")";
+        }
+        cout << "\n";
+
+    }
     return board;
   }
 

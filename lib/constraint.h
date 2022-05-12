@@ -9,7 +9,7 @@
 
 using namespace std;
 
-typedef pair<uint8_t, uint8_t> Cell;
+typedef pair<int, int> Cell;
 
 class Constraint {
 public:
@@ -18,6 +18,13 @@ public:
       : m_operation(operation), m_result(result), m_cells(cells) {}
 
   bool includes(const Cell &cell) const { return m_cells.count(cell); }
+
+  char get_operation() const { return this->m_operation; }
+
+  int get_result() const {return this->m_result; }
+
+  set<Cell> get_cells() const { return this->m_cells; }
+
 
   bool valid() const {
     if (!check_adjacency())
@@ -34,8 +41,8 @@ public:
   }
 
   bool satisfy(const vector<uint8_t> &values) const {
-    assert(m_cells.size() == values.size());
-    assert(valid());
+//    assert(m_cells.size() == values.size());
+//    assert(valid());
     return m_result == apply(values);
   }
 

@@ -12,6 +12,6 @@ KenKenBoard& KenKenSolver::board()
 
 void KenKenSolver::set_board(const KenKenBoard &board)
 {
-  assert(board.valid_board());
+//  assert(board.valid_board());
   m_board = board;
 }

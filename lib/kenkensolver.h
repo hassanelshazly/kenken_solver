@@ -8,7 +8,7 @@ class KenKenSolver
 public:
   KenKenSolver();
   KenKenSolver(KenKenBoard board) : m_board(board) {
-//    assert(board.valid_board());
+    assert(board.valid_board());
   }
   virtual ~KenKenSolver(){}
 

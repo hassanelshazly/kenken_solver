@@ -19,9 +19,16 @@ int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
 }
 
 int main(int argc, char *argv[]) {
-    int size = 4;
+    int size = 3;
     BoardGenerator generator;
     KenKenBoard board = generator.generate_random(size);
+
+    qDebug() << "BacktrackSolver";
+    BMBacktrackingSolver solver(board);
+
+    qDebug() << "solved in:" << benchmarking_solver(&solver)
+           << "microseconds";
+    qDebug() << solver.board();
 
 //  QString examples_path = "../kenken_solver/examples/";
 //  BoardGenerator generateor;

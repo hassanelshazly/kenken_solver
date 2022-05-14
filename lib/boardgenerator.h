@@ -1,16 +1,22 @@
 #ifndef BOARDGENERATOR_H
 #define BOARDGENERATOR_H
 
-#include "kenkenboard.h"
 #include <qfile.h>
+#include <unordered_map>
+#include <vector>
 
-class BoardGenerator
-{
+#include "kenkenboard.h"
+
+class BoardGenerator {
 public:
   BoardGenerator();
-
-  KenKenBoard generate_random(uint8_t size) const {
+  KenKenBoard generate_random(uint8_t size) {
     KenKenBoard board(size);
+    vector<Constraint> constraints = generate_random_constraints(size);
+    for(const auto&constraint: constraints){
+        board.add_constraint(constraint);
+        qDebug() << constraint;
+    }
     return board;
   }
 
@@ -99,6 +105,190 @@ private:
     return {list.at(1).toInt(), list.at(2).toInt()};
   }
 
+  vector<Constraint> generate_random_constraints(int64_t board_size) const {
+    vector<vector<int64_t>> solution;
+    vector<int64_t> board (board_size * board_size, -1);
+    unordered_map<int64_t, set<Cell>> cages;
+    vector<Constraint> constraints;
+    uint64_t seed;
+    vector<pair<int64_t, int64_t>> directions= {{0, -1},
+                                                {-1, 0},
+                                                {0, 1},
+                                                {1, 0}};;
+
+    solution = get_random_board(board_size);
+
+    int64_t curCageID = 0,
+            curX = -1,
+            curY = -1,
+            nextX = -1,
+            nextY = -1,
+            cageSize,
+            maxCageSize = -1,
+            boardFull,
+            growable;
+
+    // Each iteration generate new cage
+    while (true) {
+        boardFull = true;
+        for (int64_t i = 0; i < board_size ; ++ i ) {
+          for (int64_t j = 0; j < board_size ; ++ j ) {
+              if ( board[i * board_size + j] < 0) {
+                  curX = j;
+                  curY = i;
+                  boardFull = false;
+                  break;
+              }
+          }
+          if (!boardFull)
+              break;
+        }
+        if (boardFull)
+          break;
+
+        // Mark this cell as visited
+        board[curY * board_size + curX] = curCageID;
+
+        // Randomly select max cage size of this iteration
+        seed = chrono::system_clock::now().time_since_epoch().count();
+        srand(seed);
+        maxCageSize = 1 + rand() % 4;
+        cageSize = 1;
+        cages[curCageID].emplace(curY, curX);
+
+        // Start add cells to current cage
+        while (true) {
+            if (cageSize >= maxCageSize )
+              break ;
+            growable = false;
+
+            // Randomly select the direction of growth
+            seed = chrono::system_clock::now().time_since_epoch().count();
+            shuffle(directions.begin(),directions.end(), default_random_engine(seed));
+            for ( auto s : directions) {
+                nextX = curX + s.second;
+                nextY = curY + s.first;
+                if ( nextX >= 0 && nextX < board_size && nextY >= 0 && nextY < board_size ) {
+                    if (board[nextY * board_size + nextX ] == -1) {
+                        growable = true ;
+                        break ;
+                    }
+                }
+            }
+            if (growable && cageSize < maxCageSize) {
+              board[nextY * board_size + nextX] = curCageID;
+              curX = nextX ;
+              curY = nextY ;
+              cageSize += 1;
+              cages[curCageID].emplace(nextY, nextX);
+            }
+            else
+                break ;
+        }
+        curCageID++;
+    }
+
+    // Add operation for each cage
+    for (auto cage : cages) {
+        int64_t result;
+        switch (cage.second.size()) {
+            case 1:{
+                set<Cell> c = cage.second;
+                auto it = c.begin();
+                result = solution[it->first][it->second];
+                Constraint cons('=', result, cage.second);
+                constraints.push_back(cons);
+                break ;
+            }
+            case 2:{
+                int64_t smaller, larger;
+                set<Cell> c = cage.second;
+                auto it = c.begin();
+                smaller = solution[it->first][it->second];
+                it++;
+                larger = solution[it->first][it->second];
+                larger = max(smaller, larger);
+                smaller = min(smaller, larger);
+                seed = chrono::system_clock::now().time_since_epoch().count();
+                srand(seed);
+                int64_t op = 1 + rand() % 3;
+                if(op == 1) {
+                    result = larger + smaller;
+                    Constraint cons('+', result, cage.second);
+                    constraints.push_back(cons);
+                }
+                else if(op == 2) {
+                    result = larger * smaller;
+                    Constraint cons('*', result, cage.second);
+                    constraints.push_back(cons);
+                }
+                else {
+                    if(larger % smaller == 0) {
+                        result = larger / smaller;
+                        Constraint cons('/', result, cage.second);
+                        constraints.push_back(cons);
+                    }
+                    else {
+                        result = larger - smaller;
+                        Constraint cons('-', result, cage.second);
+                        constraints.push_back(cons);
+                    }
+                }
+                break;
+            }
+            default:{
+                seed = chrono::system_clock::now().time_since_epoch().count();
+                srand(seed);
+                int64_t op = 1 + rand() % 2;
+                if(op == 1) {
+                  result = 1;
+                  set<Cell> c = cage.second;
+                  for(auto it = c.begin(); it!=c.end(); ++it)
+                      result *= solution[it->first][it->second];
+                  Constraint cons('*', result, cage.second);
+                  constraints.push_back(cons);
+                }
+                else{
+                  result = 0;
+                  set<Cell> c = cage.second;
+                  for(auto it = c.begin(); it!=c.end(); ++it)
+                      result += solution[it->first][it->second];
+                  Constraint cons('+', result, cage.second);
+                  constraints.push_back(cons);
+                }
+                break;
+            }
+        }
+    }
+    return constraints;
+  }
+
+
+  vector<vector<int64_t>> get_random_board(int64_t board_size) const {
+    vector<vector<int64_t>> solution(board_size, vector<int64_t> (board_size, 0));
+    for (int64_t i = 0; i < board_size; i++) {
+      for (int64_t j = 0; j < board_size; j++)
+          solution[i][j] = (i + j) % board_size + 1;
+    }
+
+    // shuffle columns
+    unsigned seed;
+    seed = chrono::system_clock::now().time_since_epoch().count();
+    for (auto &inner : solution)
+       shuffle(inner.begin(),inner.end(), default_random_engine(seed));
+
+    // Transpose matrix
+    for(int64_t i = 0; i < board_size ; ++ i) {
+       for(int64_t j = 0; j < i ; ++ j)
+            swap(solution[i][j], solution[j][i]);
+    }
+
+    // shuffle columns
+    seed = chrono::system_clock::now().time_since_epoch().count();
+    for (auto &inner : solution)
+       shuffle(inner.begin(),inner.end(), default_random_engine(seed));
+    return solution;
+  }
 };
 
 #endif // BOARDGENERATOR_H

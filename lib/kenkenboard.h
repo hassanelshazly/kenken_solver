@@ -6,6 +6,11 @@
 #include <inttypes.h>
 #include <set>
 #include <vector>
+#include <algorithm>
+#include <random>
+#include <chrono>
+#include <unordered_map>
+#include <iostream>
 
 #include "constraint.h"
 
@@ -90,7 +95,7 @@ public:
     throw InvalidCellException();
   }
 
-  void set(const Cell &cell, uint8_t value) {
+  void set_value(const Cell &cell, uint8_t value) {
     check_cell(cell);
     check_value(value);
     m_board[cell.first][cell.second] = value;

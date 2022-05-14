@@ -7,6 +7,7 @@
 #include "ui/kenken.h"
 
 #include <QApplication>
+#include <cassert>
 
 int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
   int64_t time = 0;

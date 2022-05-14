@@ -6,6 +6,7 @@
 #include <inttypes.h>
 #include <set>
 #include <vector>
+#include <cassert>
 
 using namespace std;
 

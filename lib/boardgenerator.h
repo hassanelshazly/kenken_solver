@@ -11,9 +11,8 @@ class BoardGenerator {
 public:
   BoardGenerator();
   KenKenBoard generate_random(uint8_t size) {
-    m_size = size;
     KenKenBoard board(size);
-    vector<Constraint> constraints = process();
+    vector<Constraint> constraints = generate_random_constraints(size);
     for(const auto&constraint: constraints){
         board.add_constraint(constraint);
         qDebug() << constraint;
@@ -106,38 +105,35 @@ private:
     return {list.at(1).toInt(), list.at(2).toInt()};
   }
 
-  vector<Constraint> process() const {
+  vector<Constraint> generate_random_constraints(int64_t board_size) const {
     vector<vector<int64_t>> solution;
-    vector<int64_t> board (m_size * m_size, -1);
-    vector<char> directions;
+    vector<int64_t> board (board_size * board_size, -1);
     unordered_map<int64_t, set<Cell>> cages;
     vector<Constraint> constraints;
     uint64_t seed;
+    vector<pair<int64_t, int64_t>> directions= {{0, -1},
+                                                {-1, 0},
+                                                {0, 1},
+                                                {1, 0}};;
 
-    solution = get_filled_board();
-
-    // Fill vector with possible directions
-    directions.push_back('N');
-    directions.push_back('S');
-    directions.push_back('E');
-    directions.push_back('W');
+    solution = get_random_board(board_size);
 
     int64_t curCageID = 0,
-        curX = -1,
-        curY = -1,
-        nextX = -1,
-        nextY = -1,
-        cageSize,
-        maxCageSize = -1,
-        boardFull,
-        growable;
+            curX = -1,
+            curY = -1,
+            nextX = -1,
+            nextY = -1,
+            cageSize,
+            maxCageSize = -1,
+            boardFull,
+            growable;
 
     // Each iteration generate new cage
     while (true) {
         boardFull = true;
-        for (int64_t i = 0; i < m_size ; ++ i ) {
-          for (int64_t j = 0; j < m_size ; ++ j ) {
-              if ( board[i * m_size + j] < 0) {
+        for (int64_t i = 0; i < board_size ; ++ i ) {
+          for (int64_t j = 0; j < board_size ; ++ j ) {
+              if ( board[i * board_size + j] < 0) {
                   curX = j;
                   curY = i;
                   boardFull = false;
@@ -151,12 +147,12 @@ private:
           break;
 
         // Mark this cell as visited
-        board[curY * m_size + curX] = curCageID;
+        board[curY * board_size + curX] = curCageID;
 
         // Randomly select max cage size of this iteration
         seed = chrono::system_clock::now().time_since_epoch().count();
         srand(seed);
-        maxCageSize = 1 + rand() % MAX_CAGE_SIZE;
+        maxCageSize = 1 + rand() % 4;
         cageSize = 1;
         cages[curCageID].emplace(curY, curX);
 
@@ -169,34 +165,18 @@ private:
             // Randomly select the direction of growth
             seed = chrono::system_clock::now().time_since_epoch().count();
             shuffle(directions.begin(),directions.end(), default_random_engine(seed));
-            for ( char s : directions ) {
-              switch (s) {
-                  case 'N':
-                      nextX = curX ;
-                      nextY = curY - 1;
-                      break ;
-                  case 'E':
-                      nextX = curX + 1;
-                      nextY = curY ;
-                      break ;
-                  case 'S':
-                      nextX = curX ;
-                      nextY = curY + 1;
-                      break ;
-                  case 'W':
-                      nextX = curX - 1;
-                      nextY = curY ;
-                      break ;
-              }
-              if ( nextX >= 0 && nextX < m_size && nextY >= 0 && nextY < m_size ) {
-                  if (board[nextY * m_size + nextX ] == -1) {
-                      growable = true ;
-                      break ;
-                  }
-              }
+            for ( auto s : directions) {
+                nextX = curX + s.second;
+                nextY = curY + s.first;
+                if ( nextX >= 0 && nextX < board_size && nextY >= 0 && nextY < board_size ) {
+                    if (board[nextY * board_size + nextX ] == -1) {
+                        growable = true ;
+                        break ;
+                    }
+                }
             }
             if (growable && cageSize < maxCageSize) {
-              board[nextY * m_size + nextX] = curCageID;
+              board[nextY * board_size + nextX] = curCageID;
               curX = nextX ;
               curY = nextY ;
               cageSize += 1;
@@ -224,19 +204,14 @@ private:
                 int64_t smaller, larger;
                 set<Cell> c = cage.second;
                 auto it = c.begin();
-
                 smaller = solution[it->first][it->second];
                 it++;
                 larger = solution[it->first][it->second];
-
                 larger = max(smaller, larger);
                 smaller = min(smaller, larger);
-
-
                 seed = chrono::system_clock::now().time_since_epoch().count();
                 srand(seed);
-                int op = 1 + rand() % 3;
-
+                int64_t op = 1 + rand() % 3;
                 if(op == 1) {
                     result = larger + smaller;
                     Constraint cons('+', result, cage.second);
@@ -289,11 +264,11 @@ private:
   }
 
 
-  vector<vector<int64_t>> get_filled_board() const {
-    vector<vector<int64_t>> solution(m_size, vector<int64_t> (m_size, 0));
-    for (int64_t i = 0; i < m_size; i++) {
-      for (int64_t j = 0; j < m_size; j++)
-          solution[i][j] = (i + j) % m_size + 1;
+  vector<vector<int64_t>> get_random_board(int64_t board_size) const {
+    vector<vector<int64_t>> solution(board_size, vector<int64_t> (board_size, 0));
+    for (int64_t i = 0; i < board_size; i++) {
+      for (int64_t j = 0; j < board_size; j++)
+          solution[i][j] = (i + j) % board_size + 1;
     }
 
     // shuffle columns
@@ -303,7 +278,7 @@ private:
        shuffle(inner.begin(),inner.end(), default_random_engine(seed));
 
     // Transpose matrix
-    for(int64_t i = 0; i < m_size ; ++ i) {
+    for(int64_t i = 0; i < board_size ; ++ i) {
        for(int64_t j = 0; j < i ; ++ j)
             swap(solution[i][j], solution[j][i]);
     }
@@ -314,9 +289,6 @@ private:
        shuffle(inner.begin(),inner.end(), default_random_engine(seed));
     return solution;
   }
-private:
-    int64_t m_size;
-     int64_t MAX_CAGE_SIZE = 4;
 };
 
 #endif // BOARDGENERATOR_H

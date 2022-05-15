@@ -12,7 +12,7 @@ public:
 
 private:
    vector<uint8_t> get_domian(const Cell& cell) override {
-    set<uint8_t> domain = m_board.total_domain();
+    set<uint8_t> domain = m_board.ar_domain(cell);
     return vector<uint8_t>(domain.begin(), domain.end());
   }
 };

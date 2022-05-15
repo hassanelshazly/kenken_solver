@@ -1,14 +1,14 @@
 #ifndef HEURISTICARCCONSISTENCYSOLVER_H
 #define HEURISTICARCCONSISTENCYSOLVER_H
 
-#include "kenkensolver.h"
+#include "arcconsistencysolver.h"
 
-class HeuristicArcConsistencySolver : public KenKenSolver
+class HeuristicArcConsistencySolver : public ArcConsistencySolver
 {
 public:
   HeuristicArcConsistencySolver();
 
-  HeuristicArcConsistencySolver(KenKenBoard board) : KenKenSolver(board) {}
+  HeuristicArcConsistencySolver(KenKenBoard board) : ArcConsistencySolver(board) {}
   ~HeuristicArcConsistencySolver() {}
 
   void solve() override {

@@ -146,7 +146,10 @@ public:
   }
 
   std::set<uint8_t> ar_domain(const Cell &cell) const {
-    check_cell(cell);
+    uint8_t val = get(cell);
+    if(val != 0)
+      return set<uint8_t>{val};
+
     std::set<uint8_t> const_domain = constraint_domain(cell);
 
     std::set<uint8_t> domain;
@@ -187,6 +190,25 @@ public:
       }
     }
     return neighbors_cells;
+  }
+
+  vector<Cell> related_cells(const Cell &cell) const {
+    vector<Cell> cells;
+    for (int i = 0; i < m_size; i++) {
+      Cell related_cell = {cell.first, i};
+      if(related_cell != cell)
+        cells.push_back(related_cell);
+
+      related_cell = {i, cell.first};
+      if(related_cell != cell)
+        cells.push_back(related_cell);
+    }
+
+    for(const Cell& related_cell : get_constraint(cell).cells())
+      if(related_cell != cell)
+        cells.push_back(related_cell);
+
+    return cells;
   }
 
   class InvalidSizeException : exception {};

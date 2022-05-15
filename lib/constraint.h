@@ -2,11 +2,11 @@
 #define CONSTRAINT_H
 
 #include <QDebug>
+#include <cassert>
 #include <exception>
 #include <inttypes.h>
 #include <set>
 #include <vector>
-#include <cassert>
 
 using namespace std;
 
@@ -40,22 +40,26 @@ public:
     return m_result == apply(values);
   }
 
+  bool can_satisfy(const vector<uint8_t> &values) const {
+    return m_operation == EQUAL
+               ? find(values.begin(), values.end(), m_result) != values.end()
+           : m_operation == ADD
+               ? (values.size() == m_cells.size() ? ADD_FUNC(values) == m_result
+                                                  : ADD_FUNC(values) < m_result)
+           : m_operation == MULTIPLY ? (values.size() == m_cells.size()
+                                            ? MULTIPLY_FUNC(values) == m_result
+                                            : MULTIPLY_FUNC(values) <= m_result)
+           : m_operation == SUBTRACT
+               ? (values.size() == 1 || SUBTRACT_FUNC(values) == m_result)
+           : m_operation == DIVIDE
+               ? (values.size() == 1 || DIVIDE_FUNC(values) == m_result)
+               : false;
+  }
+
   set<uint8_t> get_domain(vector<uint8_t> values, int64_t board_size) const {
     auto can_place = [&](uint8_t value) {
       values.push_back(value);
-      bool result =
-          m_operation == EQUAL ? value == m_result
-          : m_operation == ADD
-              ? (values.size() == m_cells.size() ? ADD_FUNC(values) == m_result
-                                                 : ADD_FUNC(values) < m_result)
-          : m_operation == MULTIPLY ? (values.size() == m_cells.size()
-                                           ? MULTIPLY_FUNC(values) == m_result
-                                           : MULTIPLY_FUNC(values) <= m_result)
-          : m_operation == SUBTRACT
-              ? (values.size() == 1 || SUBTRACT_FUNC(values) == m_result)
-          : m_operation == DIVIDE
-              ? (values.size() == 1 || DIVIDE_FUNC(values) == m_result)
-              : false;
+      bool result = can_satisfy(values);
       values.pop_back();
       return result;
     };

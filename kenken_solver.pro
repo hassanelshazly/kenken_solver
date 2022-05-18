@@ -16,37 +16,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    lib/arcconsistencysolver.cpp \
-    lib/backtrackingsolver.cpp \
-    lib/benchmarking.cpp \
-    lib/bmarcconsistencysolver.cpp \
-    lib/bmbacktrackingsolver.cpp \
-    lib/bmforwardcheckingsolver.cpp \
-    lib/bmheuristicarcconsistencysolver.cpp \
-    lib/boardgenerator.cpp \
-    lib/constraint.cpp \
-    lib/forwardcheckingsolver.cpp \
-    lib/heuristicarcconsistencysolver.cpp \
-    lib/kenkenboard.cpp \
-    lib/kenkensolver.cpp \
+    lib/benchmarking/benchmarking.cpp \
+    lib/benchmarking/bmarcconsistencysolver.cpp \
+    lib/benchmarking/bmbacktrackingsolver.cpp \
+    lib/benchmarking/bmforwardcheckingsolver.cpp \
+    lib/benchmarking/bmheuristicarcconsistencysolver.cpp \
+    lib/board/boardgenerator.cpp \
+    lib/board/kenkenboard.cpp \
+    lib/constraint/arithmeticconstraint.cpp \
+    lib/constraint/rcconstraint.cpp \
+    lib/solver/arcconsistencysolver.cpp \
+    lib/solver/backtrackingsolver.cpp \
+    lib/solver/forwardcheckingsolver.cpp \
+    lib/solver/heuristicarcconsistencysolver.cpp \
+    lib/solver/kenkensolver.cpp \
     main.cpp \
     ui/kenken.cpp
 
 HEADERS += \
-    lib/arcconsistencysolver.h \
-    lib/backtrackingsolver.h \
-    lib/benchmarking.h \
-    lib/bmarcconsistencysolver.h \
-    lib/bmbacktrackingsolver.h \
-    lib/bmforwardcheckingsolver.h \
-    lib/bmheuristicarcconsistencysolver.h \
-    lib/boardgenerator.h \
-    lib/forwardcheckingsolver.h \
-    lib/heuristicarcconsistencysolver.h \
-    lib/kenkensolver.h \
-    ui/kenken.h \
-    lib/constraint.h \
-    lib/kenkenboard.h
+    lib/benchmarking/benchmarking.h \
+    lib/benchmarking/bmarcconsistencysolver.h \
+    lib/benchmarking/bmbacktrackingsolver.h \
+    lib/benchmarking/bmforwardcheckingsolver.h \
+    lib/benchmarking/bmheuristicarcconsistencysolver.h \
+    lib/board/boardgenerator.h \
+    lib/board/kenkenboard.h \
+    lib/constraint/arithmeticconstraint.h \
+    lib/constraint/rcconstraint.h \
+    lib/solver/arcconsistencysolver.h \
+    lib/solver/backtrackingsolver.h \
+    lib/solver/forwardcheckingsolver.h \
+    lib/solver/heuristicarcconsistencysolver.h \
+    lib/solver/kenkensolver.h \
+    ui/kenken.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -2,7 +2,7 @@
 #define BMHEURISTICARCCONSISTENCYSOLVER_H
 
 #include "benchmarking.h"
-#include "heuristicarcconsistencysolver.h"
+#include "lib/solver/heuristicarcconsistencysolver.h"
 
 class BMHeuristicArcConsistencySolver : public HeuristicArcConsistencySolver, public Benchmarking
 {

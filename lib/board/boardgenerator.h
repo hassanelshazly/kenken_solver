@@ -12,7 +12,7 @@ public:
   BoardGenerator();
   KenKenBoard generate_random(uint8_t size) {
     KenKenBoard board(size);
-    vector<Constraint> constraints = generate_random_constraints(size);
+    vector<ArithmeticConstraint> constraints = generate_random_constraints(size);
     for(const auto&constraint: constraints){
         board.add_constraint(constraint);
         qDebug() << constraint;
@@ -35,7 +35,7 @@ public:
       QString line = in.readLine();
       if(line.isEmpty())
         continue;
-      Constraint constraint = parse_constraint(line);
+      ArithmeticConstraint constraint = parse_constraint(line);
       board.add_constraint(constraint);
     }
     return board;
@@ -66,7 +66,7 @@ public:
   class UndefinedOpeartionException : exception {};
 
 private:
-  Constraint parse_constraint(const QString& line) const {
+  ArithmeticConstraint parse_constraint(const QString& line) const {
     QStringList list = line.split(" ", QString::SkipEmptyParts);
     char opration = parse_operation(list.at(0));
     int64_t result = list.at(1).toLongLong();
@@ -74,7 +74,7 @@ private:
     for(int i = 2; i < list.size(); i++)
       cells.insert(parse_cell(list.at(i)));
 
-    Constraint constraint(opration, result, cells);
+    ArithmeticConstraint constraint(opration, result, cells);
     if(!constraint.valid())
       throw KenKenBoard::InvalidConstraintException();
 
@@ -83,15 +83,15 @@ private:
 
   char parse_operation(const QString& op) const {
     if(op == "+" || op == "a" || op == "add" )
-      return Constraint::ADD;
+      return ArithmeticConstraint::ADD;
     if(op == "-" || op == "s" || op == "sub" || op == "subtract")
-      return Constraint::SUBTRACT;
+      return ArithmeticConstraint::SUBTRACT;
     if(op == "*" || op == "m" || op == "mul" || op == "multiply")
-      return Constraint::MULTIPLY;
+      return ArithmeticConstraint::MULTIPLY;
     if(op == "/" || op == "d" || op == "div" || op == "divide")
-      return Constraint::DIVIDE;
+      return ArithmeticConstraint::DIVIDE;
     if(op == "=" || op == "e" || op == "eq" || op == "equal" )
-      return Constraint::EQUAL;
+      return ArithmeticConstraint::EQUAL;
 
     throw UndefinedOpeartionException();
   }
@@ -105,11 +105,11 @@ private:
     return {list.at(1).toInt(), list.at(2).toInt()};
   }
 
-  vector<Constraint> generate_random_constraints(int64_t board_size) const {
+  vector<ArithmeticConstraint> generate_random_constraints(int64_t board_size) const {
     vector<vector<int64_t>> solution;
     vector<int64_t> board (board_size * board_size, -1);
     unordered_map<int64_t, set<Cell>> cages;
-    vector<Constraint> constraints;
+    vector<ArithmeticConstraint> constraints;
     uint64_t seed;
     vector<pair<int64_t, int64_t>> directions= {{0, -1},
                                                 {-1, 0},
@@ -196,7 +196,7 @@ private:
                 set<Cell> c = cage.second;
                 auto it = c.begin();
                 result = solution[it->first][it->second];
-                Constraint cons('=', result, cage.second);
+                ArithmeticConstraint cons('=', result, cage.second);
                 constraints.push_back(cons);
                 break ;
             }
@@ -214,23 +214,23 @@ private:
                 int64_t op = 1 + rand() % 3;
                 if(op == 1) {
                     result = larger + smaller;
-                    Constraint cons('+', result, cage.second);
+                    ArithmeticConstraint cons('+', result, cage.second);
                     constraints.push_back(cons);
                 }
                 else if(op == 2) {
                     result = larger * smaller;
-                    Constraint cons('*', result, cage.second);
+                    ArithmeticConstraint cons('*', result, cage.second);
                     constraints.push_back(cons);
                 }
                 else {
                     if(larger % smaller == 0) {
                         result = larger / smaller;
-                        Constraint cons('/', result, cage.second);
+                        ArithmeticConstraint cons('/', result, cage.second);
                         constraints.push_back(cons);
                     }
                     else {
                         result = larger - smaller;
-                        Constraint cons('-', result, cage.second);
+                        ArithmeticConstraint cons('-', result, cage.second);
                         constraints.push_back(cons);
                     }
                 }
@@ -245,7 +245,7 @@ private:
                   set<Cell> c = cage.second;
                   for(auto it = c.begin(); it!=c.end(); ++it)
                       result *= solution[it->first][it->second];
-                  Constraint cons('*', result, cage.second);
+                  ArithmeticConstraint cons('*', result, cage.second);
                   constraints.push_back(cons);
                 }
                 else{
@@ -253,7 +253,7 @@ private:
                   set<Cell> c = cage.second;
                   for(auto it = c.begin(); it!=c.end(); ++it)
                       result += solution[it->first][it->second];
-                  Constraint cons('+', result, cage.second);
+                  ArithmeticConstraint cons('+', result, cage.second);
                   constraints.push_back(cons);
                 }
                 break;

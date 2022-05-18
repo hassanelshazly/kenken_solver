@@ -1,7 +1,7 @@
 #ifndef KENKENSOLVER_H
 #define KENKENSOLVER_H
 
-#include "kenkenboard.h"
+#include "lib/board/kenkenboard.h"
 
 class KenKenSolver
 {

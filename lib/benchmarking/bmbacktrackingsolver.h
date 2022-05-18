@@ -2,7 +2,7 @@
 #define BMBACKTRACKINGSOLVER_H
 
 #include "benchmarking.h"
-#include "backtrackingsolver.h"
+#include "lib/solver/backtrackingsolver.h"
 
 class BMBacktrackingSolver : public BacktrackingSolver, public Benchmarking
 {

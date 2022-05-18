@@ -12,10 +12,10 @@ using namespace std;
 
 typedef pair<uint8_t, uint8_t> Cell;
 
-class Constraint {
+class ArithmeticConstraint {
 public:
-  Constraint();
-  Constraint(char operation, int64_t result, set<Cell> cells)
+  ArithmeticConstraint();
+  ArithmeticConstraint(char operation, int64_t result, set<Cell> cells)
       : m_operation(operation), m_result(result), m_cells(cells) {}
 
   bool includes(const Cell &cell) const { return m_cells.count(cell); }
@@ -86,7 +86,7 @@ public:
   int64_t result() const;
   void set_result(const int64_t &result);
 
-  friend QDebug operator<<(QDebug dbg, const Constraint &constraint);
+  friend QDebug operator<<(QDebug dbg, const ArithmeticConstraint &constraint);
 
 private:
   bool check_operation() const {

@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <iostream>
 
-#include "constraint.h"
+#include "lib/constraint/arithmeticconstraint.h"
 
 using namespace std;
 
@@ -46,7 +46,7 @@ public:
 
   bool valid_board() const {
     try {
-      for (const Constraint &constraint : m_constraints)
+      for (const ArithmeticConstraint &constraint : m_constraints)
         if (!valid_constraint(constraint))
           return false;
     } catch (const exception &ex) {
@@ -59,7 +59,7 @@ public:
   }
 
   bool satisfy_constraints() const {
-    for (const Constraint &constraint : m_constraints)
+    for (const ArithmeticConstraint &constraint : m_constraints)
       if (!satisfy_constraint(constraint))
         return false;
     return true;
@@ -82,14 +82,14 @@ public:
   }
 
   bool belongs_to_constraint(const Cell &cell) const {
-    for (const Constraint &constraint : m_constraints)
+    for (const ArithmeticConstraint &constraint : m_constraints)
       if (constraint.includes(cell))
         return true;
     return false;
   }
 
-  Constraint get_constraint(const Cell &cell) const {
-    for (const Constraint &constraint : m_constraints)
+  ArithmeticConstraint get_constraint(const Cell &cell) const {
+    for (const ArithmeticConstraint &constraint : m_constraints)
       if (constraint.includes(cell))
         return constraint;
     throw InvalidCellException();
@@ -111,7 +111,7 @@ public:
     m_board = board;
   }
 
-  void add_constraint(const Constraint &constraint) {
+  void add_constraint(const ArithmeticConstraint &constraint) {
     check_constraint(constraint);
     m_constraints.push_back(constraint);
   }
@@ -124,7 +124,7 @@ public:
   }
 
    std::set<uint8_t> fd_domain(const Cell &cell) const {
-    Constraint constraint = get_constraint(cell);
+    ArithmeticConstraint constraint = get_constraint(cell);
     vector<uint8_t> values;
 
     std::set<uint8_t> neighbors_domain = total_domain();
@@ -163,7 +163,7 @@ public:
 
   std::set<uint8_t> constraint_domain(const Cell &cell) const {
     check_cell(cell);
-    Constraint constraint = get_constraint(cell);
+    ArithmeticConstraint constraint = get_constraint(cell);
     vector<uint8_t> values = get_values(constraint);
     return constraint.get_domain(values, m_size);
   }
@@ -220,7 +220,7 @@ public:
 
   uint8_t size() const;
 
-  vector<Constraint> constraints() const;
+  vector<ArithmeticConstraint> constraints() const;
 
 private:
   void check_cell(const Cell &cell) const {
@@ -233,7 +233,7 @@ private:
       throw InvalidValueException();
   }
 
-  void check_constraint(const Constraint &constraint) const {
+  void check_constraint(const ArithmeticConstraint &constraint) const {
     if (!valid_constraint(constraint))
       throw InvalidConstraintException();
 
@@ -243,7 +243,7 @@ private:
     }
   }
 
-  bool valid_constraint(const Constraint &constraint) const {
+  bool valid_constraint(const ArithmeticConstraint &constraint) const {
     if (!constraint.valid())
       return false;
 
@@ -256,12 +256,12 @@ private:
     return true;
   }
 
-  bool satisfy_constraint(const Constraint &constraint) const {
+  bool satisfy_constraint(const ArithmeticConstraint &constraint) const {
     vector<uint8_t> values = get_values(constraint);
     return constraint.satisfy(values);
   }
 
-  vector<uint8_t> get_values(const Constraint &constraint) const {
+  vector<uint8_t> get_values(const ArithmeticConstraint &constraint) const {
     vector<uint8_t> values;
     for (const Cell &cell : constraint.cells()) {
       uint8_t value = m_board[cell.first][cell.second];
@@ -291,7 +291,7 @@ private:
 
   bool missed_cells() const {
     map<Cell, int> cells_mp;
-    for (const Constraint &constraint : m_constraints)
+    for (const ArithmeticConstraint &constraint : m_constraints)
       for (const Cell &cell : constraint.cells())
         cells_mp[cell]++;
     if (cells_mp.size() != m_size * m_size)
@@ -307,7 +307,7 @@ private:
 private:
   uint8_t m_size;
   vector<vector<uint8_t>> m_board;
-  vector<Constraint> m_constraints;
+  vector<ArithmeticConstraint> m_constraints;
 
 private:
   static constexpr uint8_t MIN_BOARD_SIZE = 2;

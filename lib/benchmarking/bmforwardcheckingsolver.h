@@ -2,7 +2,7 @@
 #define BMFORWARDCHECKINGSOLVER_H
 
 #include "benchmarking.h"
-#include "forwardcheckingsolver.h"
+#include "lib/solver/forwardcheckingsolver.h"
 
 class BMForwardCheckingSolver : public ForwardCheckingSolver, public Benchmarking
 {

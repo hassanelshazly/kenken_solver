@@ -58,7 +58,7 @@ private:
 
   bool remove_inconsistent_values(const Cell& cell, vector<vector<set<uint8_t>>>& domains) {
     set<uint8_t> domain = domains[cell.first][cell.second];
-    Constraint constraint = m_board.get_constraint(cell);
+    ArithmeticConstraint constraint = m_board.get_constraint(cell);
     set<Cell> related_cells = constraint.cells();
 
     set<uint8_t> reduced_domain;

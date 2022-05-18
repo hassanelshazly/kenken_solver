@@ -10,7 +10,7 @@ uint8_t KenKenBoard::size() const
   return m_size;
 }
 
-vector<Constraint> KenKenBoard::constraints() const
+vector<ArithmeticConstraint> KenKenBoard::constraints() const
 {
   return m_constraints;
 }

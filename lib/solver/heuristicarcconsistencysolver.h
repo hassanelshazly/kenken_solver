@@ -33,12 +33,12 @@ private:
   void order() {
     if(m_order.size())
       return;
-    vector<Constraint> constraints = m_board.constraints();
+    vector<ArithmeticConstraint> constraints = m_board.constraints();
     vector<vector<bool>> marked(m_board.size(), vector<bool>(m_board.size()));
 
     vector<Cell> ordered_cells;
-    for(const Constraint& constraint : constraints)
-      if(constraint.operation() == Constraint::EQUAL)
+    for(const ArithmeticConstraint& constraint : constraints)
+      if(constraint.operation() == ArithmeticConstraint::EQUAL)
         for(const Cell& cell : constraint.cells()) {
           ordered_cells.push_back(cell);
           marked[cell.first][cell.second] = true;

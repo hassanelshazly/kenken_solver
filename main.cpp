@@ -1,8 +1,8 @@
-#include "lib/boardgenerator.h"
-#include "lib/bmbacktrackingsolver.h"
-#include "lib/bmforwardcheckingsolver.h"
-#include "lib/bmarcconsistencysolver.h"
-#include "lib/bmheuristicarcconsistencysolver.h"
+#include "lib/board/boardgenerator.h"
+#include "lib/benchmarking/bmbacktrackingsolver.h"
+#include "lib/benchmarking/bmforwardcheckingsolver.h"
+#include "lib/benchmarking/bmarcconsistencysolver.h"
+#include "lib/benchmarking/bmheuristicarcconsistencysolver.h"
 
 #include "ui/kenken.h"
 

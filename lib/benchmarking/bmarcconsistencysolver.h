@@ -2,7 +2,7 @@
 #define BMARCCONSISTENCYSOLVER_H
 
 #include "benchmarking.h"
-#include "arcconsistencysolver.h"
+#include "lib/solver/arcconsistencysolver.h"
 
 class BMArcConsistencySolver : public ArcConsistencySolver, public Benchmarking
 {

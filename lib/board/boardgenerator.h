@@ -15,7 +15,7 @@ public:
     vector<ArithmeticConstraint> constraints = generate_random_constraints(size);
     for(const auto&constraint: constraints){
         board.add_constraint(constraint);
-        qDebug() << constraint;
+//        qDebug() << constraint;
     }
     return board;
   }
@@ -207,8 +207,8 @@ private:
                 smaller = solution[it->first][it->second];
                 it++;
                 larger = solution[it->first][it->second];
-                larger = max(smaller, larger);
-                smaller = min(smaller, larger);
+                if(smaller > larger)
+                  swap(smaller, larger);
                 seed = chrono::system_clock::now().time_since_epoch().count();
                 srand(seed);
                 int64_t op = 1 + rand() % 3;

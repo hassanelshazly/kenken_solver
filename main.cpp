@@ -19,29 +19,48 @@ int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
   return time / simulation_rounds;
 }
 
-int main(int argc, char *argv[]) {
-//    int size = 3;
-//    BoardGenerator generator;
-//    KenKenBoard board = generator.generate_random(size);
+void random_test() {
+  BoardGenerator generator;
 
-//    qDebug() << "BacktrackSolver";
-//    BMBacktrackingSolver solver(board);
+  for(int size = 2; size <= 16; size++) {
+    KenKenBoard board = generator.generate_random(size);
 
-//    qDebug() << "solved in:" << benchmarking_solver(&solver)
-//           << "microseconds";
-//    qDebug() << solver.board();
+    qDebug() << "ForwardCheckingSolver";
+    BMForwardCheckingSolver solver_a(board);
+    qDebug() << size << "solved in:" << benchmarking_solver(&solver_a)
+           << "microseconds";
+//    qDebug() << solver_a.board();
+    assert(solver_a.board().valid_solution());
 
+
+    qDebug() << "ArcConsistencySolver";
+    BMArcConsistencySolver solver_b(board);
+    qDebug() << size << "solved in:" << benchmarking_solver(&solver_b)
+           << "microseconds";
+    assert(solver_b.board().valid_solution());
+//    qDebug() << solver_b.board();
+
+    qDebug() << "HeuristicArcConsistencySolver";
+    BMHeuristicArcConsistencySolver solver_c(board);
+    qDebug() << size << "solved in:" << benchmarking_solver(&solver_c)
+           << "microseconds";
+    assert(solver_c.board().valid_solution());
+//      qDebug() << solver_c.board();
+    }
+}
+
+void expamles_test() {
   QString examples_path = "../kenken_solver/examples/";
   BoardGenerator generateor;
 
   vector<pair<QString, QString>> borads = {
-      {"board3x3.txt", "board3x3_sol.txt"},
-      {"board4x4.txt", "board4x4_sol.txt"},
-      {"board5x5.txt", "board5x5_sol.txt"},
-      {"board6x6.txt", "board6x6_sol.txt"},
-      {"board7x7.txt", "board7x7_sol.txt"},
-      {"board8x8.txt", "board8x8_sol.txt"},
-      {"board9x9.txt", "board9x9_sol.txt"},
+    {"board3x3.txt", "board3x3_sol.txt"},
+    {"board4x4.txt", "board4x4_sol.txt"},
+    {"board5x5.txt", "board5x5_sol.txt"},
+    {"board6x6.txt", "board6x6_sol.txt"},
+    {"board7x7.txt", "board7x7_sol.txt"},
+    {"board8x8.txt", "board8x8_sol.txt"},
+    {"board9x9.txt", "board9x9_sol.txt"},
   };
 
   for (const auto &[board_name, solution_name] : borads) {
@@ -58,7 +77,7 @@ int main(int argc, char *argv[]) {
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-//      qDebug() << solver.board();
+      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
@@ -68,7 +87,7 @@ int main(int argc, char *argv[]) {
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-//      qDebug() << solver.board();
+      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
@@ -80,7 +99,7 @@ int main(int argc, char *argv[]) {
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-//      qDebug() << solver.board();
+      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
@@ -91,13 +110,17 @@ int main(int argc, char *argv[]) {
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-//      qDebug() << solver.board();
+      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
-     qDebug() << "\n";
+    qDebug() << "\n";
   }
+}
 
+int main(int argc, char *argv[]) {
+  random_test();
+//  expamles_test();
   return 0;
 
   QApplication a(argc, argv);

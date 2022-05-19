@@ -24,7 +24,6 @@ SOURCES += \
     lib/board/boardgenerator.cpp \
     lib/board/kenkenboard.cpp \
     lib/constraint/arithmeticconstraint.cpp \
-    lib/constraint/rcconstraint.cpp \
     lib/solver/arcconsistencysolver.cpp \
     lib/solver/backtrackingsolver.cpp \
     lib/solver/forwardcheckingsolver.cpp \
@@ -42,7 +41,6 @@ HEADERS += \
     lib/board/boardgenerator.h \
     lib/board/kenkenboard.h \
     lib/constraint/arithmeticconstraint.h \
-    lib/constraint/rcconstraint.h \
     lib/solver/arcconsistencysolver.h \
     lib/solver/backtrackingsolver.h \
     lib/solver/forwardcheckingsolver.h \

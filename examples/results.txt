@@ -110,3 +110,68 @@ ArcConsistencySolver
 "board9x9.txt" solved in: 3888240 microseconds
 HeuristicArcConsistencySolver
 "board9x9.txt" solved in: 1353175 microseconds
+
+
+# Most Likely Random
+ForwardCheckingSolver
+2 solved in: 11 microseconds
+ArcConsistencySolver
+2 solved in: 11 microseconds
+HeuristicArcConsistencySolver
+2 solved in: 13 microseconds
+
+ForwardCheckingSolver
+3 solved in: 19 microseconds
+ArcConsistencySolver
+3 solved in: 46 microseconds
+HeuristicArcConsistencySolver
+3 solved in: 50 microseconds
+
+ForwardCheckingSolver
+4 solved in: 54 microseconds
+ArcConsistencySolver
+4 solved in: 213 microseconds
+HeuristicArcConsistencySolver
+4 solved in: 526 microseconds
+
+ForwardCheckingSolver
+5 solved in: 357 microseconds
+ArcConsistencySolver
+5 solved in: 2051 microseconds
+HeuristicArcConsistencySolver
+5 solved in: 1195 microseconds
+
+ForwardCheckingSolver
+6 solved in: 6179 microseconds
+ArcConsistencySolver
+6 solved in: 34848 microseconds
+HeuristicArcConsistencySolver
+6 solved in: 9547 microseconds
+
+ForwardCheckingSolver
+7 solved in: 8549 microseconds
+ArcConsistencySolver
+7 solved in: 8713 microseconds
+HeuristicArcConsistencySolver
+7 solved in: 56233 microseconds
+
+ForwardCheckingSolver
+8 solved in: 275518 microseconds
+ArcConsistencySolver
+8 solved in: 807674 microseconds
+HeuristicArcConsistencySolver
+8 solved in: 1638349 microseconds
+
+ForwardCheckingSolver
+9 solved in: 11036344 microseconds
+ArcConsistencySolver
+9 solved in: 2754347 microseconds
+HeuristicArcConsistencySolver
+9 solved in: 6519380 microseconds
+
+ForwardCheckingSolver
+10 solved in: 107204889 microseconds
+ArcConsistencySolver
+10 solved in: 15870240 microseconds
+HeuristicArcConsistencySolver
+10 solved in: 61047660 microseconds 

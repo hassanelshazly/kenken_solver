@@ -20,7 +20,7 @@ public:
     return board;
   }
 
-  KenKenBoard generate_from_file(QString file_path) const {
+  KenKenBoard generate_from_file(const QString& file_path) const {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
       throw FileNotFoundException();
@@ -38,6 +38,7 @@ public:
       ArithmeticConstraint constraint = parse_constraint(line);
       board.add_constraint(constraint);
     }
+    file.close();
     return board;
   }
 
@@ -67,7 +68,7 @@ public:
 
 private:
   ArithmeticConstraint parse_constraint(const QString& line) const {
-    QStringList list = line.split(" ", QString::SkipEmptyParts);
+    QStringList list = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     char opration = parse_operation(list.at(0));
     int64_t result = list.at(1).toLongLong();
     set<Cell> cells;

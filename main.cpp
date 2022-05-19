@@ -22,8 +22,11 @@ int64_t benchmarking_solver(KenKenSolver *solver, int simulation_rounds = 1) {
 void random_test() {
   BoardGenerator generator;
 
-  for(int size = 2; size <= 16; size++) {
+  for(int size = 2; size <= 9; size++) {
     KenKenBoard board = generator.generate_random(size);
+    QString file_path((to_string(size) + ".txt").c_str());
+    board.save(file_path);
+    board = generator.generate_from_file(file_path);
 
     qDebug() << "ForwardCheckingSolver";
     BMForwardCheckingSolver solver_a(board);
@@ -32,6 +35,7 @@ void random_test() {
 //    qDebug() << solver_a.board();
     assert(solver_a.board().valid_solution());
 
+    solver_a.board().save_solution((to_string(size) + "_sol.txt").c_str());
 
     qDebug() << "ArcConsistencySolver";
     BMArcConsistencySolver solver_b(board);

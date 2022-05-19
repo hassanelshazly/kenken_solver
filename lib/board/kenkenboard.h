@@ -10,7 +10,7 @@
 #include <random>
 #include <chrono>
 #include <unordered_map>
-#include <iostream>
+#include <QFile>
 
 #include "lib/constraint/arithmeticconstraint.h"
 
@@ -211,10 +211,54 @@ public:
     return cells;
   }
 
+  void save(const QString& file_path) {
+    QFile file(file_path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+      throw FileNotFoundException();
+
+    QTextStream out(&file);
+    out << m_size << endl;
+
+    int64_t max_result = 0;
+    for(const ArithmeticConstraint& constraint : m_constraints)
+      max_result = max(max_result, constraint.result());
+    int spaces = log10(max_result) + 2;
+
+    for(const ArithmeticConstraint& constraint : m_constraints) {
+      out << constraint.operation() << "  " << constraint.result();
+      for(int i = spaces, n = log10(constraint.result()); i > n; i--)
+        out << " ";
+
+      for(const Cell& cell : constraint.cells())
+        out << "(" << cell.first << "," << cell.second << ") ";
+
+      out << endl;
+    }
+
+    file.close();
+  }
+
+  void save_solution(const QString& file_path) {
+    QFile file(file_path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+      throw FileNotFoundException();
+
+    QTextStream out(&file);
+
+    for (int i = 0; i < m_size; i++) {
+      for (int j = 0; j < m_size; j++)
+        out << m_board[i][j] << " ";
+      out << endl;
+    }
+
+    file.close();
+  }
+
   class InvalidSizeException : exception {};
   class InvalidCellException : exception {};
   class InvalidValueException : exception {};
   class InvalidConstraintException : exception {};
+  class FileNotFoundException : exception {};
 
   friend QDebug operator<<(QDebug dbg, const KenKenBoard &board);
 

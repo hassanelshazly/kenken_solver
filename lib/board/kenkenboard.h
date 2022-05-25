@@ -70,9 +70,28 @@ public:
     return m_board[cell.first][cell.second];
   }
 
-  void clear(const Cell &cell) {
+  void unassign(const Cell &cell) {
     check_cell(cell);
     m_board[cell.first][cell.second] = 0;
+  }
+
+  bool vaild_assignment(const Cell &cell) {
+    check_cell(cell);
+    set<uint8_t> row, col;
+    for (int i = 0; i < m_size; i++) {
+      if(m_board[cell.first][i] != 0) {
+        if(row.count(m_board[cell.first][i]))
+          return false;
+        row.insert(m_board[cell.first][i]);
+      }
+      if(m_board[i][cell.second] != 0) {
+        if(col.count(m_board[i][cell.second]))
+          return false;
+        col.insert(m_board[i][cell.second]);
+      }
+    }
+    ArithmeticConstraint constraint = get_constraint(cell);
+    return constraint.can_satisfy(get_values(constraint));
   }
 
   void clear() {
@@ -95,7 +114,7 @@ public:
     throw InvalidCellException();
   }
 
-  void set_value(const Cell &cell, uint8_t value) {
+  void assign(const Cell &cell, uint8_t value) {
     check_cell(cell);
     check_value(value);
     m_board[cell.first][cell.second] = value;
@@ -123,28 +142,6 @@ public:
     return domain;
   }
 
-   std::set<uint8_t> fd_domain(const Cell &cell) const {
-    ArithmeticConstraint constraint = get_constraint(cell);
-    vector<uint8_t> values;
-
-    std::set<uint8_t> neighbors_domain = total_domain();
-    for (const auto &neighbor : neighbors(cell)) {
-      uint8_t value = m_board[neighbor.first][neighbor.second];
-      if (value != 0 && constraint.includes(neighbor))
-        values.push_back(value);
-      neighbors_domain.erase(value);
-    }
-    std::set<uint8_t> const_domain = constraint.get_domain(values, m_size);
-
-    std::set<uint8_t> domain;
-    for (const uint8_t value : neighbors_domain) {
-      if (const_domain.count(value))
-        domain.insert(value);
-    }
-
-    return domain;
-  }
-
   std::set<uint8_t> ar_domain(const Cell &cell) const {
     uint8_t val = get(cell);
     if(val != 0)
@@ -161,16 +158,16 @@ public:
     return domain;
   }
 
-  std::set<uint8_t> constraint_domain(const Cell &cell) const {
+  set<uint8_t> constraint_domain(const Cell &cell) const {
     check_cell(cell);
     ArithmeticConstraint constraint = get_constraint(cell);
     vector<uint8_t> values = get_values(constraint);
     return constraint.get_domain(values, m_size);
   }
 
-  std::set<uint8_t> rc_domain(const Cell &cell) const {
+  set<uint8_t> rc_domain(const Cell &cell) const {
     check_cell(cell);
-    std::set<uint8_t> domain = total_domain();
+    set<uint8_t> domain = total_domain();
 
     for (int i = 0; i < m_size; i++) {
       domain.erase(m_board[cell.first][i]);
@@ -181,12 +178,12 @@ public:
 
   vector<Cell> neighbors(const Cell &cell) const {
     static const vector<pair<int, int>> neighbors_offest = {
-        {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
+      {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
     auto [i, j] = cell;
-    vector<Cell> neighbors_cells;
-    for (const auto &[x, y] : neighbors_offest) {
+        vector<Cell> neighbors_cells;
+        for (const auto &[x, y] : neighbors_offest) {
       if (x + i >= 0 && x + i < m_size && y + j >= 0 && y + j < m_size) {
-       neighbors_cells.push_back({x + i, y + j});
+        neighbors_cells.push_back({x + i, y + j});
       }
     }
     return neighbors_cells;

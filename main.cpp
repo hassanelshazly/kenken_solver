@@ -2,7 +2,7 @@
 #include "lib/benchmarking/bmbacktrackingsolver.h"
 #include "lib/benchmarking/bmforwardcheckingsolver.h"
 #include "lib/benchmarking/bmarcconsistencysolver.h"
-#include "lib/benchmarking/bmheuristicarcconsistencysolver.h"
+#include "lib/benchmarking/bmheuristicsolver.h"
 
 #include "ui/kenken.h"
 
@@ -45,7 +45,7 @@ void random_test() {
 //    qDebug() << solver_b.board();
 
     qDebug() << "HeuristicArcConsistencySolver";
-    BMHeuristicArcConsistencySolver solver_c(board);
+    BMHeuristicSolver solver_c(board);
     qDebug() << size << "solved in:" << benchmarking_solver(&solver_c)
            << "microseconds";
     assert(solver_c.board().valid_solution());
@@ -110,7 +110,7 @@ void expamles_test() {
     if (board.size() <= 9) {
       qDebug() << "HeuristicArcConsistencySolver";
       board.clear();
-      BMHeuristicArcConsistencySolver solver(board);
+      BMHeuristicSolver solver(board);
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
@@ -123,8 +123,8 @@ void expamles_test() {
 }
 
 int main(int argc, char *argv[]) {
-  random_test();
-//  expamles_test();
+//  random_test();
+  expamles_test();
   return 0;
 
   QApplication a(argc, argv);

@@ -20,14 +20,14 @@ SOURCES += \
     lib/benchmarking/bmarcconsistencysolver.cpp \
     lib/benchmarking/bmbacktrackingsolver.cpp \
     lib/benchmarking/bmforwardcheckingsolver.cpp \
-    lib/benchmarking/bmheuristicarcconsistencysolver.cpp \
+    lib/benchmarking/bmheuristicsolver.cpp \
     lib/board/boardgenerator.cpp \
     lib/board/kenkenboard.cpp \
     lib/constraint/arithmeticconstraint.cpp \
     lib/solver/arcconsistencysolver.cpp \
     lib/solver/backtrackingsolver.cpp \
     lib/solver/forwardcheckingsolver.cpp \
-    lib/solver/heuristicarcconsistencysolver.cpp \
+    lib/solver/heuristicsolver.cpp \
     lib/solver/kenkensolver.cpp \
     main.cpp \
     ui/kenken.cpp
@@ -37,14 +37,14 @@ HEADERS += \
     lib/benchmarking/bmarcconsistencysolver.h \
     lib/benchmarking/bmbacktrackingsolver.h \
     lib/benchmarking/bmforwardcheckingsolver.h \
-    lib/benchmarking/bmheuristicarcconsistencysolver.h \
+    lib/benchmarking/bmheuristicsolver.h \
     lib/board/boardgenerator.h \
     lib/board/kenkenboard.h \
     lib/constraint/arithmeticconstraint.h \
     lib/solver/arcconsistencysolver.h \
     lib/solver/backtrackingsolver.h \
     lib/solver/forwardcheckingsolver.h \
-    lib/solver/heuristicarcconsistencysolver.h \
+    lib/solver/heuristicsolver.h \
     lib/solver/kenkensolver.h \
     ui/kenken.h
 

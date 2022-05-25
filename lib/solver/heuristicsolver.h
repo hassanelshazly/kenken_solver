@@ -1,19 +1,19 @@
 #ifndef HEURISTICARCCONSISTENCYSOLVER_H
 #define HEURISTICARCCONSISTENCYSOLVER_H
 
-#include "arcconsistencysolver.h"
+#include "kenkensolver.h"
 
-class HeuristicArcConsistencySolver : public ArcConsistencySolver
+class HeuristicSolver : public KenKenSolver
 {
 public:
-  HeuristicArcConsistencySolver();
+  HeuristicSolver();
 
-  HeuristicArcConsistencySolver(KenKenBoard board) : ArcConsistencySolver(board) {}
-  ~HeuristicArcConsistencySolver() {}
+  HeuristicSolver(KenKenBoard board) : KenKenSolver(board) {}
+  ~HeuristicSolver() {}
 
   void solve() override {
     order();
-    backtrack_solve(optional<Cell>(m_first_cell));
+    backtrack_solve(make_optional(m_first_cell));
     invalidate_order();
   }
 
@@ -26,8 +26,8 @@ private:
   optional<Cell> next_cell(const Cell& cell) override {
     auto it = m_order.find(cell);
     if(it != m_order.end())
-      return optional<Cell>(it->second);
-     return nullopt;
+      return make_optional(it->second);
+    return nullopt;
   }
 
   void order() {

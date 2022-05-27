@@ -13,14 +13,17 @@ public:
   virtual ~KenKenSolver(){}
 
   virtual void solve() {
-    backtrack_solve(optional<Cell>({0, 0}));
+    backtrack_solve(make_optional(make_pair(0, 0)));
   }
 
   KenKenBoard &board();
   void set_board(const KenKenBoard &board);
 
 protected:
-  virtual vector<uint8_t> get_domian(const Cell& cell) = 0;
+  virtual vector<uint8_t> get_domian(const Cell& cell) {
+    set<uint8_t> domain = m_board.total_domain();
+    return vector<uint8_t>(domain.begin(), domain.end());
+  }
 
   virtual bool check_domains(const optional<Cell>& cell) {
     return true;
@@ -38,19 +41,10 @@ protected:
 
 protected:
   bool backtrack_solve(const optional<Cell>& opt_cell) {
-#ifdef DEBUG_SOLVER
-    qDebug() << "Valid:" << m_board.valid_solution() ;
-    qDebug() << "Compelete:" << m_board.complete_solution() ;
-    qDebug() << m_board;
-#endif
-
     if(m_board.valid_solution())
       return true;
 
-    if(!opt_cell)
-      return false;
-
-    if(m_board.complete_solution())
+    if(!opt_cell || m_board.complete_solution())
       return false;
 
     Cell cell = opt_cell.value();

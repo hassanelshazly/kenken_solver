@@ -175,3 +175,129 @@ ArcConsistencySolver
 10 solved in: 15870240 microseconds
 HeuristicArcConsistencySolver
 10 solved in: 61047660 microseconds 
+
+
+
+##### Final
+
+BacktrackSolver
+"board3x3.txt" solved in: 35 microseconds
+ForwardCheckingSolver
+"board3x3.txt" solved in: 58 microseconds
+ArcConsistencySolver
+"board3x3.txt" solved in: 154 microseconds
+HeuristicArcConsistencySolver
+"board3x3.txt" solved in: 30 microseconds
+
+
+BacktrackSolver
+"board4x4.txt" solved in: 1080 microseconds
+ForwardCheckingSolver
+"board4x4.txt" solved in: 1067 microseconds
+ArcConsistencySolver
+"board4x4.txt" solved in: 6594 microseconds
+HeuristicArcConsistencySolver
+"board4x4.txt" solved in: 122 microseconds
+
+
+BacktrackSolver
+"board5x5.txt" solved in: 782 microseconds
+ForwardCheckingSolver
+"board5x5.txt" solved in: 835 microseconds
+ArcConsistencySolver
+"board5x5.txt" solved in: 6106 microseconds
+HeuristicArcConsistencySolver
+"board5x5.txt" solved in: 423 microseconds
+
+
+BacktrackSolver
+"board6x6.txt" solved in: 1079 microseconds
+ForwardCheckingSolver
+"board6x6.txt" solved in: 672 microseconds
+ArcConsistencySolver
+"board6x6.txt" solved in: 9959 microseconds
+HeuristicArcConsistencySolver
+"board6x6.txt" solved in: 297 microseconds
+
+
+BacktrackSolver
+"board7x7.txt" solved in: 26387 microseconds
+ForwardCheckingSolver
+"board7x7.txt" solved in: 19793 microseconds
+ArcConsistencySolver
+"board7x7.txt" solved in: 198525 microseconds
+HeuristicArcConsistencySolver
+"board7x7.txt" solved in: 13474 microseconds
+
+
+BacktrackSolver
+"board8x8.txt" solved in: 305680 microseconds
+ForwardCheckingSolver
+"board8x8.txt" solved in: 66992 microseconds
+ArcConsistencySolver
+"board8x8.txt" solved in: 1267856 microseconds
+HeuristicArcConsistencySolver
+"board8x8.txt" solved in: 738673 microseconds
+
+
+BacktrackSolver
+"board9x9.txt" solved in: 7806624 microseconds
+ForwardCheckingSolver
+"board9x9.txt" solved in: 441383 microseconds
+ArcConsistencySolver
+"board9x9.txt" solved in: 32431852 microseconds
+HeuristicArcConsistencySolver
+"board9x9.txt" solved in: 313609 microseconds
+
+
+## Random
+ForwardCheckingSolver
+2 solved in: 23 microseconds
+ArcConsistencySolver
+2 solved in: 43 microseconds
+HeuristicArcConsistencySolver
+2 solved in: 12 microseconds
+ForwardCheckingSolver
+3 solved in: 47 microseconds
+ArcConsistencySolver
+3 solved in: 138 microseconds
+HeuristicArcConsistencySolver
+3 solved in: 25 microseconds
+ForwardCheckingSolver
+4 solved in: 179 microseconds
+ArcConsistencySolver
+4 solved in: 571 microseconds
+HeuristicArcConsistencySolver
+4 solved in: 77 microseconds
+ForwardCheckingSolver
+5 solved in: 786 microseconds
+ArcConsistencySolver
+5 solved in: 2647 microseconds
+HeuristicArcConsistencySolver
+5 solved in: 842 microseconds
+ForwardCheckingSolver
+6 solved in: 2122 microseconds
+ArcConsistencySolver
+6 solved in: 23059 microseconds
+HeuristicArcConsistencySolver
+6 solved in: 2832 microseconds
+ForwardCheckingSolver
+7 solved in: 272256 microseconds
+ArcConsistencySolver
+7 solved in: 19774015 microseconds
+HeuristicArcConsistencySolver
+7 solved in: 10306 microseconds
+ForwardCheckingSolver
+8 solved in: 24583 microseconds
+ArcConsistencySolver
+8 solved in: 4706758 microseconds
+HeuristicArcConsistencySolver
+8 solved in: 57468 microseconds
+ForwardCheckingSolver
+9 solved in: 977427 microseconds
+ArcConsistencySolver
+9 solved in: 185108081 microseconds
+HeuristicArcConsistencySolver
+9 solved in: 1002407 microseconds
+
+

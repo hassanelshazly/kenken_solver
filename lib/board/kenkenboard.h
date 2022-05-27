@@ -142,13 +142,12 @@ public:
     return domain;
   }
 
-  std::set<uint8_t> ar_domain(const Cell &cell) const {
+  std::set<uint8_t> fc_domain(const Cell &cell) const {
     uint8_t val = get(cell);
     if(val != 0)
       return set<uint8_t>{val};
 
     std::set<uint8_t> const_domain = constraint_domain(cell);
-
     std::set<uint8_t> domain;
     for (const uint8_t value : rc_domain(cell)) {
       if (const_domain.count(value))
@@ -176,29 +175,15 @@ public:
     return domain;
   }
 
-  vector<Cell> neighbors(const Cell &cell) const {
-    static const vector<pair<int, int>> neighbors_offest = {
-      {0, -1}, {-1, 0}, {0, 1}, {1, 0}};
-    auto [i, j] = cell;
-        vector<Cell> neighbors_cells;
-        for (const auto &[x, y] : neighbors_offest) {
-      if (x + i >= 0 && x + i < m_size && y + j >= 0 && y + j < m_size) {
-        neighbors_cells.push_back({x + i, y + j});
-      }
-    }
-    return neighbors_cells;
-  }
-
   vector<Cell> related_cells(const Cell &cell) const {
     vector<Cell> cells;
     for (int i = 0; i < m_size; i++) {
-      Cell related_cell = {cell.first, i};
-      if(related_cell != cell)
-        cells.push_back(related_cell);
 
-      related_cell = {i, cell.first};
-      if(related_cell != cell)
-        cells.push_back(related_cell);
+      if(i != cell.second)
+        cells.push_back({cell.first, i});
+
+      if(i != cell.first)
+        Cell related_cell({i, cell.first});
     }
 
     for(const Cell& related_cell : get_constraint(cell).cells())
@@ -258,9 +243,7 @@ public:
   class FileNotFoundException : exception {};
 
   friend QDebug operator<<(QDebug dbg, const KenKenBoard &board);
-
   uint8_t size() const;
-
   vector<ArithmeticConstraint> constraints() const;
 
 private:

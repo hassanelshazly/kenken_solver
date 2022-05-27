@@ -3,42 +3,42 @@
 
 #include "kenkensolver.h"
 
-class HeuristicArcConsistencySolver : public KenKenSolver
+class HeuristicSolver : public KenKenSolver
 {
 public:
-  HeuristicArcConsistencySolver();
+  HeuristicSolver();
 
-  HeuristicArcConsistencySolver(KenKenBoard board) : KenKenSolver(board) {}
-  ~HeuristicArcConsistencySolver() {}
+  HeuristicSolver(KenKenBoard board) : KenKenSolver(board) {}
+  ~HeuristicSolver() {}
 
   void solve() override {
     order();
-    backtrack_solve(optional<Cell>(m_first_cell));
+    backtrack_solve(make_optional(m_first_cell));
     invalidate_order();
   }
 
 private:
   vector<uint8_t> get_domian(const Cell& cell) override {
-    set<uint8_t> domain = m_board.ar_domain(cell);
+    set<uint8_t> domain = m_board.fc_domain(cell);
     return vector<uint8_t>(domain.rbegin(), domain.rend());
   }
 
   optional<Cell> next_cell(const Cell& cell) override {
     auto it = m_order.find(cell);
     if(it != m_order.end())
-      return optional<Cell>(it->second);
-     return nullopt;
+      return make_optional(it->second);
+    return nullopt;
   }
 
   void order() {
     if(m_order.size())
       return;
-    vector<Constraint> constraints = m_board.constraints();
+    vector<ArithmeticConstraint> constraints = m_board.constraints();
     vector<vector<bool>> marked(m_board.size(), vector<bool>(m_board.size()));
 
     vector<Cell> ordered_cells;
-    for(const Constraint& constraint : constraints)
-      if(constraint.operation() == Constraint::EQUAL)
+    for(const ArithmeticConstraint& constraint : constraints)
+      if(constraint.operation() == ArithmeticConstraint::EQUAL)
         for(const Cell& cell : constraint.cells()) {
           ordered_cells.push_back(cell);
           marked[cell.first][cell.second] = true;

@@ -1,15 +1,15 @@
 #ifndef HEURISTICARCCONSISTENCYSOLVER_H
 #define HEURISTICARCCONSISTENCYSOLVER_H
 
-#include "kenkensolver.h"
+#include "forwardcheckingsolver.h"
 
-class HeuristicSolver : public KenKenSolver
+class HeuristicFCSolver : public ForwardCheckingSolver
 {
 public:
-  HeuristicSolver();
+  HeuristicFCSolver();
 
-  HeuristicSolver(KenKenBoard board) : KenKenSolver(board) {}
-  ~HeuristicSolver() {}
+  HeuristicFCSolver(KenKenBoard board) : ForwardCheckingSolver(board) {}
+  ~HeuristicFCSolver() {}
 
   void solve() override {
     order();
@@ -24,10 +24,7 @@ private:
   }
 
   optional<Cell> next_cell(const Cell& cell) override {
-    auto it = m_order.find(cell);
-    if(it != m_order.end())
-      return make_optional(it->second);
-    return nullopt;
+    return m_order.find(cell)->second;
   }
 
   void order() {
@@ -57,6 +54,7 @@ private:
     m_first_cell = ordered_cells.front();
     for(size_t i = 0; i < ordered_cells.size() - 1; i++)
       m_order[ordered_cells[i]] = ordered_cells[i + 1];
+     m_order[ordered_cells.back()] = nullopt;
   }
 
   void invalidate_order() {
@@ -66,7 +64,7 @@ private:
 
 private:
   Cell m_first_cell;
-  map<Cell, Cell> m_order;
+  map<Cell, optional<Cell>> m_order;
 };
 
 #endif // HEURISTICARCCONSISTENCYSOLVER_H

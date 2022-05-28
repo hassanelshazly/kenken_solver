@@ -2,7 +2,7 @@
 #include "lib/benchmarking/bmbacktrackingsolver.h"
 #include "lib/benchmarking/bmforwardcheckingsolver.h"
 #include "lib/benchmarking/bmarcconsistencysolver.h"
-#include "lib/benchmarking/bmheuristicsolver.h"
+#include "lib/benchmarking/bmheuristicfcsolver.h"
 
 #include "ui/kenken.h"
 
@@ -24,9 +24,9 @@ void random_test() {
 
   for(int size = 2; size <= 9; size++) {
     KenKenBoard board = generator.generate_random(size);
-    QString file_path((to_string(size) + ".txt").c_str());
-    board.save(file_path);
-    board = generator.generate_from_file(file_path);
+//    QString file_path((to_string(size) + ".txt").c_str());
+//    board.save(file_path);
+//    board = generator.generate_from_file(file_path);
 
     qDebug() << "ForwardCheckingSolver";
     BMForwardCheckingSolver solver_a(board);
@@ -45,7 +45,7 @@ void random_test() {
 //    qDebug() << solver_b.board();
 
     qDebug() << "HeuristicArcConsistencySolver";
-    BMHeuristicSolver solver_c(board);
+    BMHeuristicFCSolver solver_c(board);
     qDebug() << size << "solved in:" << benchmarking_solver(&solver_c)
            << "microseconds";
     assert(solver_c.board().valid_solution());
@@ -110,7 +110,7 @@ void expamles_test() {
     if (board.size() <= 9) {
       qDebug() << "HeuristicArcConsistencySolver";
       board.clear();
-      BMHeuristicSolver solver(board);
+      BMHeuristicFCSolver solver(board);
 
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";

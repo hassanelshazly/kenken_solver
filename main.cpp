@@ -115,51 +115,64 @@ void expamles_test() {
   }
 }
 
+void print_statistics(vector<int64_t> data) {
+  sort(data.begin(), data.end());
+  int64_t min = *min_element(data.begin(), data.end());
+  int64_t max = *max_element(data.begin(), data.end());
+  int64_t median = data.size() & 1 ? data[data.size()/2] :
+                   (data[data.size()/2 - 1] + data[data.size()/2]) / 2;
+  int64_t mean = accumulate(data.begin(), data.end(), 0) / data.size();
+
+  qDebug() << "Mean:" << mean << "    \t" << "Meadian:" << median;
+  qDebug() << " Min:" << min << "    \t" << "    Max:" << max;
+}
+
 void benchmarking_test() {
   BoardGenerator generator;
   int num_boards = 100;
 
   for(int size = 2; size <= 9; size++) {
-    int64_t bt = 0, fc = 0, ac = 0, he = 0;
+    vector<vector<int64_t>> data(4);
 
     for(int i = 0; i < num_boards; i++) {
       KenKenBoard board = generator.generate_random(size);
       assert(board.valid_board());
 
       BMBacktrackingSolver bt_solver(board);
-      bt += benchmarking_solver(&bt_solver);
+      data[0].push_back(benchmarking_solver(&bt_solver));
       assert(bt_solver.board().valid_solution());
 
       BMForwardCheckingSolver fc_solver(board);
-      fc += benchmarking_solver(&fc_solver);
+      data[1].push_back(benchmarking_solver(&fc_solver));
       assert(fc_solver.board().valid_solution());
 
       BMArcConsistencySolver ac_solver(board);
-      ac += benchmarking_solver(&ac_solver);
+      data[2].push_back(benchmarking_solver(&ac_solver));
       assert(ac_solver.board().valid_solution());
 
       BMHeuristicFCSolver he_solver(board);
-      he += benchmarking_solver(&he_solver);
+      data[3].push_back(benchmarking_solver(&he_solver));
       assert(he_solver.board().valid_solution());
     }
 
-    string message = to_string(size) + "x" + to_string(size) + " solved in:";
 
+    string board_name = to_string(size) + "x" + to_string(size);
+    qDebug() << "Board" << board_name.c_str() << "statistics in microseconds";
     qDebug() << "BacktrackingSolver";
-    qDebug() <<  message.c_str() << bt / num_boards << "microseconds";
+    print_statistics(data[0]);
     qDebug() << "ForwardCheckingSolver";
-    qDebug() <<  message.c_str() << fc / num_boards << "microseconds";
+    print_statistics(data[1]);
     qDebug() << "ArcConsistencySolver";
-    qDebug() <<  message.c_str() << ac / num_boards << "microseconds";
+    print_statistics(data[2]);
     qDebug() << "HeuristicFCSolver";
-    qDebug() <<  message.c_str() << he / num_boards << "microseconds";
+    print_statistics(data[3]);
     qDebug() << "\n";
   }
 
 }
 
 int main(int argc, char *argv[]) {
-//  random_test();
+  //  random_test();
   //  expamles_test();
   benchmarking_test();
   return 0;

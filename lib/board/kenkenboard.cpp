@@ -12,7 +12,12 @@ uint8_t KenKenBoard::size() const
 
 vector<ArithmeticConstraint> KenKenBoard::constraints() const
 {
-  return m_constraints;
+    return m_constraints;
+}
+
+const vector<vector<uint8_t> > &KenKenBoard::board() const
+{
+    return m_board;
 }
 
 QDebug operator<<(QDebug dbg, const KenKenBoard &board) {

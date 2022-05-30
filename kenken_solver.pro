@@ -30,7 +30,9 @@ SOURCES += \
     lib/solver/heuristicfcsolver.cpp \
     lib/solver/kenkensolver.cpp \
     main.cpp \
-    ui/kenken.cpp
+    ui/board-area.cpp \
+    ui/kenken.cpp \
+    ui/solver-thread.cpp
 
 HEADERS += \
     lib/benchmarking/benchmarking.h \
@@ -46,7 +48,9 @@ HEADERS += \
     lib/solver/forwardcheckingsolver.h \
     lib/solver/heuristicfcsolver.h \
     lib/solver/kenkensolver.h \
-    ui/kenken.h
+    ui/board-area.h \
+    ui/kenken.h \
+    ui/solver-thread.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

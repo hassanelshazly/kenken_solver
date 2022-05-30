@@ -172,14 +172,14 @@ void benchmarking_test() {
 }
 
 int main(int argc, char *argv[]) {
-  //  random_test();
-  //  expamles_test();
-  benchmarking_test();
-  return 0;
+  // random_test();
+  // expamles_test();
+  // benchmarking_test();
+  // return 0;
 
-  QApplication a(argc, argv);
+  QApplication app(argc, argv);
   KenKen w;
   w.show();
 
-  return a.exec();
+  return app.exec();
 }

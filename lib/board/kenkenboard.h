@@ -246,6 +246,8 @@ public:
   uint8_t size() const;
   vector<ArithmeticConstraint> constraints() const;
 
+  const vector<vector<uint8_t> > &board() const;
+
 private:
   void check_cell(const Cell &cell) const {
     if (cell.first >= m_size || cell.second >= m_size)

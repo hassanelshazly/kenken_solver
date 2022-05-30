@@ -24,15 +24,20 @@ void random_test() {
 
   for(int size = 2; size <= 9; size++) {
     KenKenBoard board = generator.generate_random(size);
-//    QString file_path((to_string(size) + ".txt").c_str());
-//    board.save(file_path);
-//    board = generator.generate_from_file(file_path);
+    //    QString file_path((to_string(size) + ".txt").c_str());
+    //    board.save(file_path);
+    //    board = generator.generate_from_file(file_path);
+
+    qDebug() << "BacktrackSolver";
+    BMBacktrackingSolver solver(board);
+    qDebug() << size << "solved in:" << benchmarking_solver(&solver)
+             << "microseconds";
+    assert(solver.board().valid_solution());
 
     qDebug() << "ForwardCheckingSolver";
     BMForwardCheckingSolver solver_a(board);
     qDebug() << size << "solved in:" << benchmarking_solver(&solver_a)
-           << "microseconds";
-//    qDebug() << solver_a.board();
+             << "microseconds";
     assert(solver_a.board().valid_solution());
 
     solver_a.board().save_solution((to_string(size) + "_sol.txt").c_str());
@@ -40,17 +45,15 @@ void random_test() {
     qDebug() << "ArcConsistencySolver";
     BMArcConsistencySolver solver_b(board);
     qDebug() << size << "solved in:" << benchmarking_solver(&solver_b)
-           << "microseconds";
+             << "microseconds";
     assert(solver_b.board().valid_solution());
-//    qDebug() << solver_b.board();
 
-    qDebug() << "HeuristicArcConsistencySolver";
+    qDebug() << "HeuristicFCSolver";
     BMHeuristicFCSolver solver_c(board);
     qDebug() << size << "solved in:" << benchmarking_solver(&solver_c)
-           << "microseconds";
+             << "microseconds";
     assert(solver_c.board().valid_solution());
-//      qDebug() << solver_c.board();
-    }
+  }
 }
 
 void expamles_test() {
@@ -78,43 +81,33 @@ void expamles_test() {
     if (board.size() <= 9) {
       qDebug() << "BacktrackSolver";
       BMBacktrackingSolver solver(board);
-
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
     if (board.size() <= 9) {
       qDebug() << "ForwardCheckingSolver";
       BMForwardCheckingSolver solver(board);
-
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
 
     if (board.size() <= 9) {
       qDebug() << "ArcConsistencySolver";
-      board.clear();
       BMArcConsistencySolver solver(board);
-
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
     if (board.size() <= 9) {
-      qDebug() << "HeuristicArcConsistencySolver";
-      board.clear();
+      qDebug() << "HeuristicFCSolver";
       BMHeuristicFCSolver solver(board);
-
       qDebug() << board_name << "solved in:" << benchmarking_solver(&solver)
                << "microseconds";
-      //      qDebug() << solver.board();
       assert(solver.board().valid_solution());
     }
 
@@ -122,9 +115,53 @@ void expamles_test() {
   }
 }
 
+void benchmarking_test() {
+  BoardGenerator generator;
+  int num_boards = 100;
+
+  for(int size = 2; size <= 9; size++) {
+    int64_t bt = 0, fc = 0, ac = 0, he = 0;
+
+    for(int i = 0; i < num_boards; i++) {
+      KenKenBoard board = generator.generate_random(size);
+      assert(board.valid_board());
+
+      BMBacktrackingSolver bt_solver(board);
+      bt += benchmarking_solver(&bt_solver);
+      assert(bt_solver.board().valid_solution());
+
+      BMForwardCheckingSolver fc_solver(board);
+      fc += benchmarking_solver(&fc_solver);
+      assert(fc_solver.board().valid_solution());
+
+      BMArcConsistencySolver ac_solver(board);
+      ac += benchmarking_solver(&ac_solver);
+      assert(ac_solver.board().valid_solution());
+
+      BMHeuristicFCSolver he_solver(board);
+      he += benchmarking_solver(&he_solver);
+      assert(he_solver.board().valid_solution());
+    }
+
+    string message = to_string(size) + "x" + to_string(size) + " solved in:";
+
+    qDebug() << "BacktrackingSolver";
+    qDebug() <<  message.c_str() << bt / num_boards << "microseconds";
+    qDebug() << "ForwardCheckingSolver";
+    qDebug() <<  message.c_str() << fc / num_boards << "microseconds";
+    qDebug() << "ArcConsistencySolver";
+    qDebug() <<  message.c_str() << ac / num_boards << "microseconds";
+    qDebug() << "HeuristicFCSolver";
+    qDebug() <<  message.c_str() << he / num_boards << "microseconds";
+    qDebug() << "\n";
+  }
+
+}
+
 int main(int argc, char *argv[]) {
 //  random_test();
-  expamles_test();
+  //  expamles_test();
+  benchmarking_test();
   return 0;
 
   QApplication a(argc, argv);

@@ -27,12 +27,6 @@ public:
   }
 
 private:
-  virtual vector<uint8_t> get_domian(const Cell &cell) override {
-    set<uint8_t> domain = m_board.fc_domain(cell);
-    return vector<uint8_t>(domain.begin(), domain.end());
-  }
-
-public:
   bool ac_solve(const optional<Cell> &cell,
                 vector<vector<set<uint8_t>>> domains) {
     if (m_board.valid_solution())

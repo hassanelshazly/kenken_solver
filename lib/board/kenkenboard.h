@@ -178,12 +178,11 @@ public:
   vector<Cell> related_cells(const Cell &cell) const {
     vector<Cell> cells;
     for (int i = 0; i < m_size; i++) {
-
       if(i != cell.second)
         cells.push_back({cell.first, i});
 
       if(i != cell.first)
-        Cell related_cell({i, cell.first});
+        cells.push_back({i, cell.second});
     }
 
     for(const Cell& related_cell : get_constraint(cell).cells())

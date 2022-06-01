@@ -57,7 +57,6 @@ private:
     set<pair<Cell, Cell>> remaining;
     for (const Cell &related_cell : cells) {
       remaining.insert({cell, related_cell});
-      remaining.insert({related_cell, cell});
     }
 
     while (remaining.size()) {

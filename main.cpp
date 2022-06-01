@@ -121,10 +121,10 @@ void print_statistics(vector<int64_t> data) {
   int64_t max = *max_element(data.begin(), data.end());
   int64_t median = data.size() & 1 ? data[data.size()/2] :
                    (data[data.size()/2 - 1] + data[data.size()/2]) / 2;
-  int64_t mean = accumulate(data.begin(), data.end(), 0) / data.size();
+  int64_t mean = accumulate(data.begin(), data.end(), 0ll) / data.size();
 
-  qDebug() << "Mean:" << mean << "    \t" << "Meadian:" << median;
-  qDebug() << " Min:" << min << "    \t" << "    Max:" << max;
+  qDebug() << "Mean:" << mean << "    \t" << "Median:" << median;
+  qDebug() << " Min:" << min << "    \t" << "   Max:" << max;
 }
 
 void benchmarking_test() {
@@ -172,10 +172,10 @@ void benchmarking_test() {
 }
 
 int main(int argc, char *argv[]) {
-  // random_test();
-  // expamles_test();
-  // benchmarking_test();
-  // return 0;
+//   random_test();
+//   expamles_test();
+//   benchmarking_test();
+//   return 0;
 
   QApplication app(argc, argv);
   KenKen w;

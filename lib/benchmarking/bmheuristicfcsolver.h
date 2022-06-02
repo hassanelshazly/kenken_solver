@@ -12,11 +12,7 @@ public:
   BMHeuristicFCSolver(KenKenBoard board) : HeuristicFCSolver(board) {}
   ~BMHeuristicFCSolver() {}
 
-  void solve() override {
-     start();
-     HeuristicFCSolver::solve();
-     end();
-  }
+  void solve() override;
 };
 
 #endif // BMHEURISTICARCCONSISTENCYSOLVER_H

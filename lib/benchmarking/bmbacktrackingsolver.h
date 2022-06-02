@@ -12,11 +12,7 @@ public:
   BMBacktrackingSolver(KenKenBoard board) : BacktrackingSolver(board) {}
   ~BMBacktrackingSolver() {}
 
-  void solve() override {
-     start();
-     BacktrackingSolver::solve();
-     end();
-  }
+  void solve() override;
 };
 
 #endif // BMBACKTRACKINGSOLVER_H

@@ -12,11 +12,7 @@ public:
   BMForwardCheckingSolver(KenKenBoard board) : ForwardCheckingSolver(board) {}
   ~BMForwardCheckingSolver() {}
 
-  void solve() override {
-     start();
-     ForwardCheckingSolver::solve();
-     end();
-  }
+  void solve() override;
 };
 
 #endif // BMFORWARDCHECKINGSOLVER_H

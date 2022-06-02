@@ -9,31 +9,13 @@ class Benchmarking
 public:
   Benchmarking();
 
-  void start() {
-    timer.start();
-  }
+  void start();
+  void end();
 
-  void end() {
-    msecs = timer.elapsed();
-    nsecs = timer.nsecsElapsed();
-    timer.invalidate();
-  }
-
-  int64_t measured_nsecs() {
-    return nsecs;
-  }
-
-  int64_t measured_usecs() {
-    return round(nsecs / 1000.0);
-  }
-
-  int64_t measured_msecs() {
-    return msecs;
-  }
-
-  int64_t measured_secs() {
-    return round(msecs / 1000.0);
-  }
+  int64_t measured_nsecs();
+  int64_t measured_usecs();
+  int64_t measured_msecs();
+  int64_t measured_secs();
 
 private:
   QElapsedTimer timer;

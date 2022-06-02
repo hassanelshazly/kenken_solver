@@ -12,11 +12,7 @@ public:
   BMArcConsistencySolver(KenKenBoard board) : ArcConsistencySolver(board) {}
   ~BMArcConsistencySolver() {}
 
-  void solve() override {
-     start();
-     ArcConsistencySolver::solve();
-     end();
-  }
+  void solve() override;
 };
 
 #endif // BMARCCONSISTENCYSOLVER_H

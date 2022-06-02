@@ -4,8 +4,7 @@
 #include <QElapsedTimer>
 #include <cmath>
 
-class Benchmarking
-{
+class Benchmarking {
 public:
   Benchmarking();
 

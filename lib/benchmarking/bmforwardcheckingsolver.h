@@ -4,8 +4,8 @@
 #include "benchmarking.h"
 #include "lib/solver/forwardcheckingsolver.h"
 
-class BMForwardCheckingSolver : public ForwardCheckingSolver, public Benchmarking
-{
+class BMForwardCheckingSolver : public ForwardCheckingSolver,
+                                public Benchmarking {
 public:
   BMForwardCheckingSolver();
 

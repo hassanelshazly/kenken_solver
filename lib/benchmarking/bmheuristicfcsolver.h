@@ -4,8 +4,7 @@
 #include "benchmarking.h"
 #include "lib/solver/heuristicfcsolver.h"
 
-class BMHeuristicFCSolver : public HeuristicFCSolver, public Benchmarking
-{
+class BMHeuristicFCSolver : public HeuristicFCSolver, public Benchmarking {
 public:
   BMHeuristicFCSolver();
 

@@ -1,7 +1,7 @@
 #include "bmarcconsistencysolver.h"
 
 BMArcConsistencySolver::BMArcConsistencySolver()
-  : ArcConsistencySolver(), Benchmarking() {}
+    : ArcConsistencySolver(), Benchmarking() {}
 
 void BMArcConsistencySolver::solve() {
   start();

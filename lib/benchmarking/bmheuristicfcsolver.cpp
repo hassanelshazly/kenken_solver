@@ -1,7 +1,7 @@
 #include "bmheuristicfcsolver.h"
 
 BMHeuristicFCSolver::BMHeuristicFCSolver()
-  : HeuristicFCSolver(), Benchmarking() {}
+    : HeuristicFCSolver(), Benchmarking() {}
 
 void BMHeuristicFCSolver::solve() {
   start();

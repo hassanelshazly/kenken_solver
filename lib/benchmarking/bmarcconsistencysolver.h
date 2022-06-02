@@ -4,8 +4,8 @@
 #include "benchmarking.h"
 #include "lib/solver/arcconsistencysolver.h"
 
-class BMArcConsistencySolver : public ArcConsistencySolver, public Benchmarking
-{
+class BMArcConsistencySolver : public ArcConsistencySolver,
+                               public Benchmarking {
 public:
   BMArcConsistencySolver();
 

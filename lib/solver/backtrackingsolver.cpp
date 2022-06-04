@@ -1,6 +1,3 @@
 #include "backtrackingsolver.h"
 
-BacktrackingSolver::BacktrackingSolver() : KenKenSolver()
-{
-
-}
+BacktrackingSolver::BacktrackingSolver() : KenKenSolver() {}

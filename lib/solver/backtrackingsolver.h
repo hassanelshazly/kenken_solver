@@ -3,8 +3,7 @@
 
 #include "kenkensolver.h"
 
-class BacktrackingSolver : public KenKenSolver
-{
+class BacktrackingSolver : public KenKenSolver {
 public:
   BacktrackingSolver();
   BacktrackingSolver(KenKenBoard board) : KenKenSolver(board) {}

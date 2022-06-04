@@ -188,6 +188,13 @@ void ArcConsistencySolver::add_arithmetic_arcs(Cell cell) {
 
 void ArcConsistencySolver::clear_arcs() { arcs.clear(); }
 
+template <typename value_t>
+QDebug operator<<(QDebug dbg, const set<value_t> &st) {
+  for (const value_t &val : st)
+    dbg << val;
+  return dbg;
+}
+
 void ArcConsistencySolver::print_domains(
     const vector<vector<set<uint8_t>>> &domains) {
   for (const auto &row : domains) {
@@ -195,11 +202,4 @@ void ArcConsistencySolver::print_domains(
     for (const auto &domain : row)
       deb << domain << "\t\t";
   }
-}
-
-template <typename value_t>
-QDebug operator<<(QDebug dbg, const set<value_t> &st) {
-  for (const value_t &val : st)
-    dbg << val;
-  return dbg;
 }

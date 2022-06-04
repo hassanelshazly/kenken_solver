@@ -3,64 +3,21 @@
 
 #include "forwardcheckingsolver.h"
 
-class HeuristicFCSolver : public ForwardCheckingSolver
-{
+class HeuristicFCSolver : public ForwardCheckingSolver {
 public:
   HeuristicFCSolver();
 
-  HeuristicFCSolver(KenKenBoard board) : ForwardCheckingSolver(board) {}
+  HeuristicFCSolver(KenKenBoard board);
   ~HeuristicFCSolver() {}
 
-  void solve() override {
-    order();
-    backtrack_solve(make_optional(m_first_cell));
-    invalidate_order();
-  }
+  void solve() override;
 
 private:
-  vector<uint8_t> get_domian(const Cell& cell) override {
-    set<uint8_t> domain = m_board.fc_domain(cell);
-    return vector<uint8_t>(domain.rbegin(), domain.rend());
-  }
+  vector<uint8_t> get_domian(const Cell &cell) override;
+  optional<Cell> next_cell(const Cell &cell) override;
 
-  optional<Cell> next_cell(const Cell& cell) override {
-    return m_order.find(cell)->second;
-  }
-
-  void order() {
-    if(m_order.size())
-      return;
-    vector<ArithmeticConstraint> constraints = m_board.constraints();
-    vector<vector<bool>> marked(m_board.size(), vector<bool>(m_board.size()));
-
-    vector<Cell> ordered_cells;
-    for(const ArithmeticConstraint& constraint : constraints)
-      if(constraint.operation() == ArithmeticConstraint::EQUAL)
-        for(const Cell& cell : constraint.cells()) {
-          ordered_cells.push_back(cell);
-          marked[cell.first][cell.second] = true;
-        }
-
-    for(int i = 0; i < m_board.size(); i++)
-      for(int j = 0; j < m_board.size(); j++)
-        if(!marked[i][j])
-          ordered_cells.push_back({i, j});
-
-    if(ordered_cells.empty()) {
-      m_first_cell = {0, 0};
-      return;
-    }
-
-    m_first_cell = ordered_cells.front();
-    for(size_t i = 0; i < ordered_cells.size() - 1; i++)
-      m_order[ordered_cells[i]] = ordered_cells[i + 1];
-     m_order[ordered_cells.back()] = nullopt;
-  }
-
-  void invalidate_order() {
-    m_first_cell = {0, 0};
-    m_order.clear();
-  }
+  void order();
+  void invalidate_order();
 
 private:
   Cell m_first_cell;

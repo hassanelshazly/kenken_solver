@@ -26,6 +26,7 @@ KenKen::KenKen()
     solverAlgorithmComboBox->addItem(tr("Backtracking"), static_cast<int>(SolverThread::SolverAlgorithm::Backtracking));
     solverAlgorithmComboBox->addItem(tr("ForwardChecking"), static_cast<int>(SolverThread::SolverAlgorithm::ForwardChecker));
     solverAlgorithmComboBox->addItem(tr("ArcConsistency"), static_cast<int>(SolverThread::SolverAlgorithm::ArcConsistency));
+    solverAlgorithmComboBox->addItem(tr("Heuristic"), static_cast<int>(SolverThread::SolverAlgorithm::Heuristic));
 
     solverAlgorithmLabel = new QLabel(tr("Solver &Algorithm:"));
     solverAlgorithmLabel->setBuddy(solverAlgorithmComboBox);
@@ -44,15 +45,24 @@ KenKen::KenKen()
     saveBoardFromFileButton = new QPushButton("&Save Board to file...");
     connect(saveBoardFromFileButton, &QAbstractButton::clicked, this, &KenKen::saveBoardFromFilePushed);
 
-    statsTableWidget = new QTableWidget(3, 2);
+    saveBoardSolutionFromFileButton = new QPushButton("&Save Board Solution to file...");
+    connect(saveBoardSolutionFromFileButton, &QAbstractButton::clicked, this, &KenKen::saveBoardSolutionFromFilePushed);
+
+    statsTableWidget = new QTableWidget(4, 2);
+    QStringList statsTableHeaderLabels;
+    statsTableHeaderLabels << "Algorithm" << "Time (us)";
+    statsTableWidget->setHorizontalHeaderLabels(statsTableHeaderLabels);
     QHeaderView *statsHeader = statsTableWidget->horizontalHeader();
     statsHeader->setSectionResizeMode(QHeaderView::Stretch);
+    statsTableWidget->verticalHeader()->setVisible(false);
     QTableWidgetItem *backtrackingItem = new QTableWidgetItem("Backtracking");
     statsTableWidget->setItem(0, 0, backtrackingItem);
     QTableWidgetItem *forwardCheckingItem = new QTableWidgetItem("ForwardChecking");
     statsTableWidget->setItem(1, 0, forwardCheckingItem);
     QTableWidgetItem *arcConsistencyItem = new QTableWidgetItem("ArcConsistency");
     statsTableWidget->setItem(2, 0, arcConsistencyItem);
+    QTableWidgetItem *heuristicItem = new QTableWidgetItem("Heuristic");
+    statsTableWidget->setItem(3, 0, heuristicItem);
 
     benchmarkPushButton = new QPushButton("&Benchmark...");
     connect(benchmarkPushButton, &QAbstractButton::clicked, this, &KenKen::benchmarkPushed);
@@ -68,9 +78,10 @@ KenKen::KenKen()
     controlsLayout->addWidget(takenTimeLabel, 4, 1);
     controlsLayout->addWidget(loadBoardFromFileButton, 5, 0, 1, 2);
     controlsLayout->addWidget(saveBoardFromFileButton, 6, 0, 1, 2);
-    controlsLayout->addWidget(statsTableWidget, 7, 0, 1, 2);
-    controlsLayout->addWidget(benchmarkPushButton, 8, 0, 1, 2);
-    controlsLayout->setRowStretch(9, 1);
+    controlsLayout->addWidget(saveBoardSolutionFromFileButton, 7, 0, 1, 2);
+    controlsLayout->addWidget(statsTableWidget, 8, 0, 1, 2);
+    controlsLayout->addWidget(benchmarkPushButton, 9, 0, 1, 2);
+    controlsLayout->setRowStretch(10, 1);
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addLayout(controlsLayout);
@@ -148,8 +159,26 @@ void KenKen::saveBoardFromFilePushed()
     if (dialog.exec() != QDialog::Accepted)
         return;
 
+    boardArea->getSolvedBoard().save(dialog.selectedFiles().constFirst().toStdString().c_str());
+}
+
+void KenKen::saveBoardSolutionFromFilePushed()
+{
+    QFileDialog dialog(
+        this, tr("Save Board Solution As"),
+        "../kenken_solver/examples",
+        "Board files (*.txt)"
+    );
+
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
     boardArea->getSolvedBoard().save_solution(dialog.selectedFiles().constFirst().toStdString().c_str());
 }
+
 
 void KenKen::benchmarkPushed()
 {
@@ -166,4 +195,6 @@ void KenKen::handleBenchmarked(QList<qint64> solvingTimes) {
     statsTableWidget->setItem(1, 1, forwardCheckingItem);
     QTableWidgetItem *arcConsistencyItem = new QTableWidgetItem(QString::number(solvingTimes[2]));
     statsTableWidget->setItem(2, 1, arcConsistencyItem);
+    QTableWidgetItem *heuristicItem = new QTableWidgetItem(QString::number(solvingTimes[3]));
+    statsTableWidget->setItem(3, 1, heuristicItem);
 }

@@ -10,7 +10,7 @@ class SolverThread : public QThread
 {
     Q_OBJECT
 public:
-    enum SolverAlgorithm { Backtracking, ForwardChecker, ArcConsistency };
+    enum SolverAlgorithm { Backtracking, ForwardChecker, ArcConsistency, Heuristic };
 
     explicit SolverThread(KenKenBoard board, SolverAlgorithm solverAlgorithm):
         board(board), solverAlgorithm(solverAlgorithm) {}

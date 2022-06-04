@@ -43,7 +43,7 @@ public:
   set<uint8_t> rc_domain(const Cell &cell) const;
   vector<Cell> related_cells(const Cell &cell) const;
 
-  void save(const QString &file_path);
+  void save(const QString &file_path) const;
   void save_solution(const QString &file_path) const;
 
   class InvalidSizeException : exception {};

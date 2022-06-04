@@ -26,6 +26,7 @@ private slots:
 
     void loadBoardFromFilePushed();
     void saveBoardFromFilePushed();
+    void saveBoardSolutionFromFilePushed();
 
     void benchmarkPushed();
 
@@ -44,6 +45,7 @@ private:
     QPushButton *solvePushButton;
     QPushButton *loadBoardFromFileButton;
     QPushButton *saveBoardFromFileButton;
+    QPushButton *saveBoardSolutionFromFileButton;
     QPushButton *benchmarkPushButton;
     QTableWidget *statsTableWidget;
 };

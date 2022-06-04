@@ -29,6 +29,9 @@ void SolverThread::run()
     case ArcConsistency:
         solver = new BMArcConsistencySolver(board);
         break;
+    case Heuristic:
+        solver = new BMHeuristicFCSolver(board);
+        break;
     }
 
     qint64 solvingTime = benchmarking_solver(solver);

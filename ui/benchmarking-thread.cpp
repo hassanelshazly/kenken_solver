@@ -32,5 +32,9 @@ void BenchmarkingThread::run()
     res << benchmarking_solver(solver);
     delete solver;
 
+    solver = new BMHeuristicFCSolver(board);
+    res << benchmarking_solver(solver);
+    delete solver;
+
     emit benchmarkingFinished(res);
 }

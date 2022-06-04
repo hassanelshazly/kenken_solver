@@ -10,6 +10,7 @@ class QComboBox;
 class QLabel;
 class QPushButton;
 class QSpinBox;
+class QTableWidget;
 QT_END_NAMESPACE
 class BoardArea;
 
@@ -26,7 +27,10 @@ private slots:
     void loadBoardFromFilePushed();
     void saveBoardFromFilePushed();
 
+    void benchmarkPushed();
+
     void handleSolved(KenKenBoard *board, qint64 solvingTime);
+    void handleBenchmarked(QList<qint64> solvingTimes);
 
 private:
     BoardArea *boardArea;
@@ -40,5 +44,7 @@ private:
     QPushButton *solvePushButton;
     QPushButton *loadBoardFromFileButton;
     QPushButton *saveBoardFromFileButton;
+    QPushButton *benchmarkPushButton;
+    QTableWidget *statsTableWidget;
 };
 #endif // KENKEN_H

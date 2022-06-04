@@ -30,6 +30,7 @@ SOURCES += \
     lib/solver/heuristicfcsolver.cpp \
     lib/solver/kenkensolver.cpp \
     main.cpp \
+    ui/benchmarking-thread.cpp \
     ui/board-area.cpp \
     ui/kenken.cpp \
     ui/solver-thread.cpp
@@ -48,6 +49,7 @@ HEADERS += \
     lib/solver/forwardcheckingsolver.h \
     lib/solver/heuristicfcsolver.h \
     lib/solver/kenkensolver.h \
+    ui/benchmarking-thread.h \
     ui/board-area.h \
     ui/kenken.h \
     ui/solver-thread.h

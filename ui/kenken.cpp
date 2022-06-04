@@ -4,6 +4,7 @@
 
 #include "ui/board-area.h"
 #include "ui/solver-thread.h"
+#include "ui/benchmarking-thread.h"
 #include "lib/board/boardgenerator.h"
 
 const int IdRole = Qt::UserRole;
@@ -43,6 +44,19 @@ KenKen::KenKen()
     saveBoardFromFileButton = new QPushButton("&Save Board to file...");
     connect(saveBoardFromFileButton, &QAbstractButton::clicked, this, &KenKen::saveBoardFromFilePushed);
 
+    statsTableWidget = new QTableWidget(3, 2);
+    QHeaderView *statsHeader = statsTableWidget->horizontalHeader();
+    statsHeader->setSectionResizeMode(QHeaderView::Stretch);
+    QTableWidgetItem *backtrackingItem = new QTableWidgetItem("Backtracking");
+    statsTableWidget->setItem(0, 0, backtrackingItem);
+    QTableWidgetItem *forwardCheckingItem = new QTableWidgetItem("ForwardChecking");
+    statsTableWidget->setItem(1, 0, forwardCheckingItem);
+    QTableWidgetItem *arcConsistencyItem = new QTableWidgetItem("ArcConsistency");
+    statsTableWidget->setItem(2, 0, arcConsistencyItem);
+
+    benchmarkPushButton = new QPushButton("&Benchmark...");
+    connect(benchmarkPushButton, &QAbstractButton::clicked, this, &KenKen::benchmarkPushed);
+
     QGridLayout *controlsLayout = new QGridLayout;
     controlsLayout->addWidget(boardSizeLabel, 0, 0, Qt::AlignRight);
     controlsLayout->addWidget(boardSizeSpinBox, 0, 1);
@@ -54,7 +68,9 @@ KenKen::KenKen()
     controlsLayout->addWidget(takenTimeLabel, 4, 1);
     controlsLayout->addWidget(loadBoardFromFileButton, 5, 0, 1, 2);
     controlsLayout->addWidget(saveBoardFromFileButton, 6, 0, 1, 2);
-    controlsLayout->setRowStretch(7, 1);
+    controlsLayout->addWidget(statsTableWidget, 7, 0, 1, 2);
+    controlsLayout->addWidget(benchmarkPushButton, 8, 0, 1, 2);
+    controlsLayout->setRowStretch(9, 1);
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addLayout(controlsLayout);
@@ -133,4 +149,21 @@ void KenKen::saveBoardFromFilePushed()
         return;
 
     boardArea->getSolvedBoard().save_solution(dialog.selectedFiles().constFirst().toStdString().c_str());
+}
+
+void KenKen::benchmarkPushed()
+{
+    BenchmarkingThread *benchmarkingThread = new BenchmarkingThread(boardArea->getBoard());
+    connect(benchmarkingThread, &BenchmarkingThread::benchmarkingFinished, this, &KenKen::handleBenchmarked);
+    connect(benchmarkingThread, &BenchmarkingThread::finished, benchmarkingThread, &QObject::deleteLater);
+    benchmarkingThread->start();
+}
+
+void KenKen::handleBenchmarked(QList<qint64> solvingTimes) {
+    QTableWidgetItem *backtrackingItem = new QTableWidgetItem(QString::number(solvingTimes[0]));
+    statsTableWidget->setItem(0, 1, backtrackingItem);
+    QTableWidgetItem *forwardCheckingItem = new QTableWidgetItem(QString::number(solvingTimes[1]));
+    statsTableWidget->setItem(1, 1, forwardCheckingItem);
+    QTableWidgetItem *arcConsistencyItem = new QTableWidgetItem(QString::number(solvingTimes[2]));
+    statsTableWidget->setItem(2, 1, arcConsistencyItem);
 }

@@ -16,7 +16,7 @@ BoardArea::BoardArea(QWidget *parent)
     solved = false;
 
     BoardGenerator generator;
-    board = generator.generate_random(3);
+    board = generator.generate_random(2);
 
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -39,6 +39,7 @@ const KenKenBoard &BoardArea::getBoard() const
 
 void BoardArea::setBoard(const KenKenBoard &newBoard)
 {
+    solved = false;
     this->board = newBoard;
     update();
 }
@@ -51,16 +52,7 @@ const KenKenBoard &BoardArea::getSolvedBoard() const
 void BoardArea::setSolvedBoard(const KenKenBoard &newSolvedBoard)
 {
     this->solvedBoard = newSolvedBoard;
-}
-
-bool BoardArea::getSolved() const
-{
-    return solved;
-}
-
-void BoardArea::setSolved(bool newSolved)
-{
-    solved = newSolved;
+    solved = true;
     update();
 }
 
@@ -85,10 +77,9 @@ void BoardArea::paintEvent(QPaintEvent *event)
     painter.save();
     painter.translate(margin + qRound((W - size) / 2.0), margin + qRound((H - size) / 2.0));
 
-    QRandomGenerator randomGenerator;
+    int i = 0;
     for (const auto &constraint: board.constraints()) {
-        QColor color(randomGenerator.bounded(256), randomGenerator.bounded(256), randomGenerator.bounded(256));
-        painter.setBrush(QBrush(color, Qt::SolidPattern));
+        painter.setBrush(QBrush(cells_colors[i++ % (sizeof(cells_colors) / sizeof(cells_colors[0]))], Qt::SolidPattern));
 
         auto cells = constraint.cells();
         auto it = cells.begin();
@@ -107,15 +98,15 @@ void BoardArea::paintEvent(QPaintEvent *event)
             painter.restore();
 
             painter.restore();
-        }
 
-        while (++it != cells.end()) {
-            painter.save();
-            painter.translate((*it).first * cellSize, (*it).second * cellSize);
+            while (++it != cells.end()) {
+                painter.save();
+                painter.translate((*it).first * cellSize, (*it).second * cellSize);
 
-            painter.drawRect(rect);
+                painter.drawRect(rect);
 
-            painter.restore();
+                painter.restore();
+            }
         }
     }
 

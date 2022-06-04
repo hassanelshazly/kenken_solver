@@ -23,6 +23,9 @@ private slots:
     void generatePushed();
     void solvePushed();
 
+    void loadBoardFromFilePushed();
+    void saveBoardFromFilePushed();
+
     void handleSolved(KenKenBoard *board, qint64 solvingTime);
 
 private:
@@ -35,5 +38,7 @@ private:
     QComboBox *solverAlgorithmComboBox;
     QPushButton *generatePushButton;
     QPushButton *solvePushButton;
+    QPushButton *loadBoardFromFileButton;
+    QPushButton *saveBoardFromFileButton;
 };
 #endif // KENKEN_H

@@ -13,9 +13,9 @@ KenKen::KenKen()
     boardArea = new BoardArea;
 
     boardSizeSpinBox = new QSpinBox;
-    boardSizeSpinBox->setRange(3, 9);
+    boardSizeSpinBox->setRange(2, 9);
 
-    boardSizeLabel = new QLabel(tr("Board &Size:"));
+    boardSizeLabel = new QLabel(tr("Board Si&ze:"));
     boardSizeLabel->setBuddy(boardSizeSpinBox);
 
     generatePushButton = new QPushButton("&Generate");
@@ -29,13 +29,19 @@ KenKen::KenKen()
     solverAlgorithmLabel = new QLabel(tr("Solver &Algorithm:"));
     solverAlgorithmLabel->setBuddy(solverAlgorithmComboBox);
 
-    solvePushButton = new QPushButton("So&lve");
+    solvePushButton = new QPushButton("Sol&ve");
     connect(solvePushButton, &QAbstractButton::clicked, this, &KenKen::solvePushed);
 
     takenTimeLabel = new QLabel("0");
 
     solvingTimeLabel = new QLabel(tr("Solving Time: "));
     solvingTimeLabel->setBuddy(takenTimeLabel);
+
+    loadBoardFromFileButton = new QPushButton("&Load Board from file...");
+    connect(loadBoardFromFileButton, &QAbstractButton::clicked, this, &KenKen::loadBoardFromFilePushed);
+
+    saveBoardFromFileButton = new QPushButton("&Save Board to file...");
+    connect(saveBoardFromFileButton, &QAbstractButton::clicked, this, &KenKen::saveBoardFromFilePushed);
 
     QGridLayout *controlsLayout = new QGridLayout;
     controlsLayout->addWidget(boardSizeLabel, 0, 0, Qt::AlignRight);
@@ -46,7 +52,9 @@ KenKen::KenKen()
     controlsLayout->addWidget(solvePushButton, 3, 0, 1, 2);
     controlsLayout->addWidget(solvingTimeLabel, 4, 0);
     controlsLayout->addWidget(takenTimeLabel, 4, 1);
-    controlsLayout->setRowStretch(5, 1);
+    controlsLayout->addWidget(loadBoardFromFileButton, 5, 0, 1, 2);
+    controlsLayout->addWidget(saveBoardFromFileButton, 6, 0, 1, 2);
+    controlsLayout->setRowStretch(7, 1);
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->addLayout(controlsLayout);
@@ -63,7 +71,6 @@ void KenKen::generatePushed()
     BoardGenerator generator;
     KenKenBoard board = generator.generate_random(size);
 
-    boardArea->setSolved(false);
     boardArea->setBoard(board);
 }
 
@@ -89,8 +96,41 @@ void KenKen::handleSolved(KenKenBoard *board, qint64 solvingTime)
 #endif
 
     boardArea->setSolvedBoard(*board);
-    boardArea->setSolved(true);
     takenTimeLabel->setText(QString::number(solvingTime));
 
     delete board;
+}
+
+void KenKen::loadBoardFromFilePushed()
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Open Board"),
+        "../kenken_solver/examples",
+        "Board files (*.txt)"
+    );
+
+    if (fileName.isEmpty())
+        return;
+
+    BoardGenerator generator;
+    KenKenBoard board = generator.generate_from_file(fileName);
+
+    boardArea->setBoard(board);
+}
+
+void KenKen::saveBoardFromFilePushed()
+{
+    QFileDialog dialog(
+        this, tr("Save Board As"),
+        "../kenken_solver/examples",
+        "Board files (*.txt)"
+    );
+
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
+    boardArea->getSolvedBoard().save_solution(dialog.selectedFiles().constFirst().toStdString().c_str());
 }

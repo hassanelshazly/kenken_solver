@@ -202,7 +202,7 @@ void KenKenBoard::save(const QString &file_path) {
   file.close();
 }
 
-void KenKenBoard::save_solution(const QString &file_path) {
+void KenKenBoard::save_solution(const QString &file_path) const {
   QFile file(file_path);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     throw FileNotFoundException();

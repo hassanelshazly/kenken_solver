@@ -44,7 +44,7 @@ public:
   vector<Cell> related_cells(const Cell &cell) const;
 
   void save(const QString &file_path);
-  void save_solution(const QString &file_path);
+  void save_solution(const QString &file_path) const;
 
   class InvalidSizeException : exception {};
   class InvalidCellException : exception {};
